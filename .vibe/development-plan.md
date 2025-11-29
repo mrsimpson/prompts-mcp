@@ -175,16 +175,18 @@ _None yet_
 
 #### Milestone 10: MCP Server Core (Dependencies: M3, M8)
 
-- [ ] Install @modelcontextprotocol/sdk dependency
-- [ ] Implement ServerFactory (src/server/server-factory.ts)
-- [ ] Create MCP Server instance
-- [ ] Register prompts capability
-- [ ] Implement ListPromptsHandler (src/server/handlers/list-prompts.ts)
-- [ ] Implement GetPromptHandler (src/server/handlers/get-prompt.ts)
-- [ ] Format responses per MCP protocol
-- [ ] Handle errors and return error responses
-- [ ] Write unit tests for handlers
-- [ ] Write integration tests for server
+- [x] Install @modelcontextprotocol/sdk dependency
+- [x] Install zod dependency (required by MCP SDK)
+- [x] Add serverName and serverVersion to ServerConfig
+- [x] Implement ServerFactory (src/server/server-factory.ts)
+- [x] Create MCP Server instance using McpServer class
+- [x] Register prompts capability
+- [x] Implement prompt registration with arguments support
+- [x] Handle prompts with and without arguments
+- [x] Format responses per MCP protocol (GetPromptResult)
+- [x] Handle errors during prompt registration
+- [x] Write unit tests for ServerFactory (6 tests passing)
+- [x] Update config tests for new ServerConfig fields
 
 #### Milestone 11: stdio Transport (Dependencies: M10)
 

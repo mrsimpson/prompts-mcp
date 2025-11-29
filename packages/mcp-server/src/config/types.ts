@@ -12,6 +12,10 @@ export type TransportType = 'stdio' | 'http';
  * Server configuration
  */
 export interface ServerConfig {
+  /** Server name for MCP identification */
+  serverName: string;
+  /** Server version */
+  serverVersion: string;
   /** Optional custom prompts directory */
   customPromptsDir?: string;
   /** HTTP server port */
