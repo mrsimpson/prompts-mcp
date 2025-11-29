@@ -8,6 +8,12 @@
   "bin": {
     "mcp-prompts-server": "dist/bin.js"
   },
+  "files": [
+    "dist",
+    "resources",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "clean:build": "rimraf ./dist",
@@ -42,8 +48,13 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-org/mcp-prompts-server",
+    "url": "https://github.com/mrsimpson/prompts-mcp.git",
     "directory": "packages/mcp-server"
   },
+  "homepage": "https://github.com/mrsimpson/prompts-mcp#readme",
+  "bugs": {
+    "url": "https://github.com/mrsimpson/prompts-mcp/issues"
+  },
+  "author": "Oliver Jaegle",
   "license": "MIT"
 }

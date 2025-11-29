@@ -102,7 +102,7 @@ export class HttpTransport {
         if (c.req.method === 'POST') {
           try {
             parsedBody = await c.req.json();
-          } catch (error) {
+          } catch {
             if (this.debug) {
               this.logger.debug('HTTP transport: Failed to parse JSON body');
             }
@@ -139,10 +139,10 @@ export class HttpTransport {
             _headers: {} as Record<string, string | string[]>,
             _body: '',
             headersSent: false,
-            _eventHandlers: {} as Record<string, Function[]>,
+            _eventHandlers: {} as Record<string, ((...args: unknown[]) => void)[]>,
             
             // EventEmitter-like methods (minimal implementation)
-            on(event: string, handler: Function) {
+            on(event: string, handler: (...args: unknown[]) => void) {
               if (!this._eventHandlers[event]) {
                 this._eventHandlers[event] = [];
               }
@@ -150,22 +150,22 @@ export class HttpTransport {
               return this;
             },
             
-            once(event: string, handler: Function) {
-              const wrappedHandler = (...args: any[]) => {
+            once(event: string, handler: (...args: unknown[]) => void) {
+              const wrappedHandler = (...args: unknown[]) => {
                 handler(...args);
                 this.off(event, wrappedHandler);
               };
               return this.on(event, wrappedHandler);
             },
             
-            off(event: string, handler: Function) {
+            off(event: string, handler: (...args: unknown[]) => void) {
               if (this._eventHandlers[event]) {
                 this._eventHandlers[event] = this._eventHandlers[event].filter(h => h !== handler);
               }
               return this;
             },
             
-            emit(event: string, ...args: any[]) {
+            emit(event: string, ...args: unknown[]) {
               if (this._eventHandlers[event]) {
                 this._eventHandlers[event].forEach(handler => handler(...args));
               }
