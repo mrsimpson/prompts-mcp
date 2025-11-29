@@ -4,7 +4,7 @@ import { resolve } from 'node:path';
 
 describe('Pre-shipped Prompts', () => {
   it('should load all 5 pre-shipped prompts successfully', async () => {
-    const promptsDir = resolve(process.cwd(), 'packages/mcp-server/resources/prompts');
+    const promptsDir = resolve(process.cwd(), 'resources/prompts');
     const result = await PromptLoader.loadFromDirectory(promptsDir);
 
     // Should have no errors
@@ -25,7 +25,7 @@ describe('Pre-shipped Prompts', () => {
   });
 
   it('should have valid metadata for code-review prompt', async () => {
-    const promptsDir = resolve(process.cwd(), 'packages/mcp-server/resources/prompts');
+    const promptsDir = resolve(process.cwd(), 'resources/prompts');
     const result = await PromptLoader.loadFromDirectory(promptsDir);
 
     const codeReview = result.prompts.find((p) => p.name === 'code-review');
@@ -37,14 +37,14 @@ describe('Pre-shipped Prompts', () => {
     expect(codeReview.tags).toContain('review');
     expect(codeReview.arguments).toBeDefined();
     expect(codeReview.arguments).toHaveLength(3);
-    if (codeReview.arguments) {
-      expect(codeReview.arguments[0].name).toBe('code');
-      expect(codeReview.arguments[0].required).toBe(true);
+    if (codeReview.arguments && codeReview.arguments.length > 0) {
+      expect(codeReview.arguments[0]?.name).toBe('code');
+      expect(codeReview.arguments[0]?.required).toBe(true);
     }
   });
 
   it('should have valid metadata for documentation prompt', async () => {
-    const promptsDir = resolve(process.cwd(), 'packages/mcp-server/resources/prompts');
+    const promptsDir = resolve(process.cwd(), 'resources/prompts');
     const result = await PromptLoader.loadFromDirectory(promptsDir);
 
     const documentation = result.prompts.find((p) => p.name === 'documentation');
@@ -57,7 +57,7 @@ describe('Pre-shipped Prompts', () => {
   });
 
   it('should have valid metadata for brainstorming prompt', async () => {
-    const promptsDir = resolve(process.cwd(), 'packages/mcp-server/resources/prompts');
+    const promptsDir = resolve(process.cwd(), 'resources/prompts');
     const result = await PromptLoader.loadFromDirectory(promptsDir);
 
     const brainstorming = result.prompts.find((p) => p.name === 'brainstorming');
@@ -70,7 +70,7 @@ describe('Pre-shipped Prompts', () => {
   });
 
   it('should have valid metadata for meeting-notes prompt', async () => {
-    const promptsDir = resolve(process.cwd(), 'packages/mcp-server/resources/prompts');
+    const promptsDir = resolve(process.cwd(), 'resources/prompts');
     const result = await PromptLoader.loadFromDirectory(promptsDir);
 
     const meetingNotes = result.prompts.find((p) => p.name === 'meeting-notes');
@@ -83,7 +83,7 @@ describe('Pre-shipped Prompts', () => {
   });
 
   it('should have valid metadata for refactoring prompt', async () => {
-    const promptsDir = resolve(process.cwd(), 'packages/mcp-server/resources/prompts');
+    const promptsDir = resolve(process.cwd(), 'resources/prompts');
     const result = await PromptLoader.loadFromDirectory(promptsDir);
 
     const refactoring = result.prompts.find((p) => p.name === 'refactoring');
@@ -96,7 +96,7 @@ describe('Pre-shipped Prompts', () => {
   });
 
   it('should have non-empty content for all prompts', async () => {
-    const promptsDir = resolve(process.cwd(), 'packages/mcp-server/resources/prompts');
+    const promptsDir = resolve(process.cwd(), 'resources/prompts');
     const result = await PromptLoader.loadFromDirectory(promptsDir);
 
     result.prompts.forEach((prompt) => {

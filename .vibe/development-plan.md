@@ -190,11 +190,11 @@ _None yet_
 
 #### Milestone 11: stdio Transport (Dependencies: M10)
 
-- [ ] Implement stdio transport setup (src/transports/stdio.ts)
-- [ ] Use @modelcontextprotocol/sdk StdioServerTransport
-- [ ] Connect server to stdio transport
-- [ ] Handle process signals (SIGINT, SIGTERM)
-- [ ] Write integration tests for stdio communication
+- [x] Implement stdio transport setup (src/transports/stdio.ts)
+- [x] Use @modelcontextprotocol/sdk StdioServerTransport
+- [x] Connect server to stdio transport
+- [x] Handle process signals (SIGINT, SIGTERM)
+- [x] Write integration tests for stdio communication (12 tests passing)
 
 #### Milestone 12: HTTP Transport (Dependencies: M10)
 
