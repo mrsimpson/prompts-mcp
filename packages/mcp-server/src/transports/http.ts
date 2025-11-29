@@ -114,6 +114,7 @@ export class HttpTransport {
             
             setHeader(name: string, value: string | string[]) {
               this._headers[name.toLowerCase()] = value;
+              return this;
             },
             
             writeHead(statusCode: number, headers?: Record<string, string | string[]>) {
@@ -124,11 +125,13 @@ export class HttpTransport {
                 });
               }
               this.headersSent = true;
+              return this; // Return this for chaining support
             },
             
             write(chunk: string | Buffer) {
               // For SSE streaming, accumulate chunks
               this._body += chunk.toString();
+              return true;
             },
             
             end(data?: string | Buffer) {
