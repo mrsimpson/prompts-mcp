@@ -83,7 +83,7 @@ export class ServerFactory {
               description: prompt.description,
               argsSchema,
             },
-            async (_args) => {
+            async () => {
               return {
                 messages: [
                   {
@@ -104,7 +104,7 @@ export class ServerFactory {
             {
               description: prompt.description,
             },
-            async (_args) => {
+            async () => {
               return {
                 messages: [
                   {
