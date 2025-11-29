@@ -213,25 +213,24 @@ _None yet_
 
 #### Milestone 13: Main Entry Points (Dependencies: M3, M11, M12)
 
-- [ ] Implement bin.ts (CLI entry point with shebang)
-- [ ] Implement index.ts (main entry point)
-- [ ] Load configuration
-- [ ] Load prompts (pre-shipped + custom if configured)
-- [ ] Create server instance
-- [ ] Setup transports (stdio and/or HTTP)
-- [ ] Handle startup errors
-- [ ] Log startup information
-- [ ] Write E2E tests for server startup
+- [x] Implement bin.ts (CLI entry point with shebang)
+- [x] Implement index.ts (main entry point)
+- [x] Load configuration
+- [x] Load prompts (pre-shipped + custom if configured)
+- [x] Create server instance
+- [x] Setup transports (stdio and/or HTTP)
+- [x] Handle startup errors
+- [x] Log startup information
+- [x] Export public API for programmatic use
 
 #### Milestone 14: Build & Package (Dependencies: M13)
 
-- [ ] Update root package.json paths for new package
-- [ ] Configure package.json exports
-- [ ] Set up bin configuration in package.json
-- [ ] Add build scripts
-- [ ] Test build output
-- [ ] Verify executable permissions on bin.ts
-- [ ] Test local installation (pnpm link)
+- [x] Configure package.json exports (already done)
+- [x] Set up bin configuration in package.json (already done)
+- [x] Fix tsconfig.build.json noEmit override
+- [x] Add build scripts (already done)
+- [x] Test build output
+- [x] Verify executable permissions on bin.js
 
 #### Milestone 15: Testing & Quality (Dependencies: M1-M14)
 
