@@ -164,13 +164,14 @@ _None yet_
 
 #### Milestone 9: Pre-shipped Prompts (Dependencies: none)
 
-- [ ] Create resources/prompts/ directory
-- [ ] Write code-review.md example prompt
-- [ ] Write documentation.md example prompt
-- [ ] Write brainstorming.md example prompt
-- [ ] Write meeting-notes.md example prompt
-- [ ] Write refactoring.md example prompt
-- [ ] Validate all example prompts
+- [x] Create resources/prompts/ directory
+- [x] Write code-review.md example prompt
+- [x] Write documentation.md example prompt
+- [x] Write brainstorming.md example prompt
+- [x] Write meeting-notes.md example prompt
+- [x] Write refactoring.md example prompt
+- [x] Validate all example prompts
+- [x] Write integration tests for pre-shipped prompts (7 tests passing)
 
 #### Milestone 10: MCP Server Core (Dependencies: M3, M8)
 
