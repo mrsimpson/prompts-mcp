@@ -188,6 +188,11 @@ export class HttpTransport {
               return this; // Return this for chaining support
             },
             
+            flushHeaders() {
+              // Mark headers as sent
+              this.headersSent = true;
+            },
+            
             write(chunk: string | Buffer) {
               // For SSE streaming, accumulate chunks
               this._body += chunk.toString();
