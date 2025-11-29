@@ -5,15 +5,17 @@
 cd /Users/oliverjaegle/projects/privat/mcp-server/prompts/packages/mcp-server
 ```
 
-## ✅ Status: Ready to Use!
+## ✅ Status: Production Ready!
 - **166 tests passing** ✅
-- **Built and compiled** ✅
-- **HTTP transport working** ✅
-- **stdio transport working** ✅
+- **Built and compiled** ✅  
+- **stdio transport working** ✅ **(RECOMMENDED)**
+- **HTTP transport** ⚠️ **EXPERIMENTAL**
+
+> **Note:** The stdio transport is fully functional and production-ready. The HTTP transport is experimental and may have compatibility issues with some MCP clients. For Claude Desktop and most MCP use cases, use stdio transport.
 
 ---
 
-## 🎯 How to Run
+## 🎯 How to Run (Recommended: stdio)
 
 ### Option 1: stdio Only (For Claude Desktop)
 
