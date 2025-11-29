@@ -138,6 +138,39 @@ Provide feedback on:
   - **description**: Argument description
   - **required**: Boolean indicating if argument is required
 
+### Template Syntax
+
+Prompts use Handlebars templating for parameter substitution. The server performs template rendering before sending the prompt to the client.
+
+**Variable substitution:**
+```handlebars
+Hello {{name}}! Your code is in {{language}}.
+```
+
+**Conditional blocks (for optional parameters):**
+```handlebars
+{{#if language}}
+Programming language: {{language}}
+{{/if}}
+
+{{#if focus}}
+Focus area: {{focus}}
+{{/if}}
+```
+
+**Iteration (for array parameters):**
+```handlebars
+{{#each items}}
+- {{this}}
+{{/each}}
+```
+
+**Important notes:**
+- Template variables use `{{variable}}` syntax
+- Conditionals use `{{#if variable}}...{{/if}}`
+- The server automatically escapes HTML by default, but disables escaping for prompts to preserve code formatting
+- For more advanced Handlebars features, see the [Handlebars documentation](https://handlebarsjs.com/guide/)
+
 ## Pre-shipped Prompts
 
 The server comes with 5 example prompts:

@@ -7,6 +7,7 @@ import type { ServerConfig } from '../config/types.js';
 import type { PromptManager } from '../prompts/prompt-manager.js';
 import { createLogger } from '../utils/logger.js';
 import { z } from 'zod';
+import Handlebars from 'handlebars';
 
 const logger = createLogger('ServerFactory');
 
@@ -39,6 +40,7 @@ export class ServerFactory {
       {
         capabilities: {
           prompts: {},
+          tools: {},
         },
       },
     );
@@ -46,11 +48,62 @@ export class ServerFactory {
     // Register all prompts from the manager
     ServerFactory.registerPrompts(server, promptManager);
 
+    // Register tools
+    ServerFactory.registerTools(server, promptManager);
+
     logger.info('MCP server created successfully', {
       promptCount: promptManager.listPrompts().length,
     });
 
     return server;
+  }
+
+  /**
+   * Registers tools with the MCP server
+   */
+  private static registerTools(
+    server: McpServer,
+    promptManager: PromptManager,
+  ): void {
+    // Register list_prompts tool
+    server.registerTool(
+      'list_prompts',
+      {
+        description: 'List all available prompts with their metadata',
+      },
+      async () => {
+        const prompts = promptManager.listPrompts();
+        
+        // Build structured result
+        const promptList = prompts.map(prompt => ({
+          name: prompt.name,
+          description: prompt.description,
+          tags: prompt.tags,
+          arguments: prompt.arguments?.map(arg => ({
+            name: arg.name,
+            description: arg.description,
+            required: arg.required ?? false,
+          })) ?? [],
+          source: prompt.metadata.source,
+        }));
+
+        return {
+          content: [
+            {
+              type: 'text' as const,
+              text: JSON.stringify({
+                prompts: promptList,
+                total: prompts.length,
+              }, null, 2),
+            },
+          ],
+        };
+      },
+    );
+
+    logger.info('Tools registered successfully', {
+      toolCount: 1,
+    });
   }
 
   /**
@@ -76,21 +129,26 @@ export class ServerFactory {
 
         // Register prompt with MCP server
         if (Object.keys(argsSchema).length > 0) {
-          // Prompt with arguments
+          // Prompt with arguments - use Handlebars for template substitution
           server.registerPrompt(
             prompt.name,
             {
               description: prompt.description,
               argsSchema,
             },
-            async () => {
+            async (args) => {
+              // Compile and render the template with provided arguments
+              // Use noEscape: true to prevent HTML escaping in code snippets
+              const template = Handlebars.compile(prompt.content, { noEscape: true });
+              const renderedContent = template(args);
+              
               return {
                 messages: [
                   {
                     role: 'user',
                     content: {
                       type: 'text',
-                      text: prompt.content,
+                      text: renderedContent,
                     },
                   },
                 ],

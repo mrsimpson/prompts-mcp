@@ -232,6 +232,16 @@ _None yet_
 - [x] Test build output
 - [x] Verify executable permissions on bin.js
 
+#### Milestone 14.5: Tools Support (Dependencies: M10, M14)
+
+- [x] Add tools capability to server capabilities
+- [x] Implement registerTools method in ServerFactory
+- [x] Create list_prompts tool to list all prompts with metadata
+- [x] Return structured JSON with prompt names, descriptions, tags, arguments, and source
+- [x] Write integration tests for list_prompts tool (5 tests passing)
+- [x] Verify tool appears in tools/list endpoint
+- [x] All tests passing (181 total)
+
 #### Milestone 15: Testing & Quality (Dependencies: M1-M14)
 
 - [ ] Achieve 80%+ unit test coverage
@@ -353,6 +363,12 @@ _None yet_
 
 - **Decision:** Include 5 example prompts: code-review, documentation, brainstorming, meeting-notes, refactoring
 - **Rationale:** Provide immediate value, demonstrate prompt format, cover common use cases
+
+### KD-19: Tools Support
+
+- **Decision:** Add `list_prompts` tool alongside prompts capability
+- **Rationale:** Some AI agents refuse MCP servers without tools; provides programmatic access to prompt metadata for discovery and filtering
+- **Implementation:** Single tool returns structured JSON with all prompt metadata (name, description, tags, arguments, source)
 
 ## Notes
 
