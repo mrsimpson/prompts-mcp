@@ -153,14 +153,14 @@ _None yet_
 
 #### Milestone 8: Prompt Management (Dependencies: M7)
 
-- [ ] Implement PromptManager (src/prompts/prompt-manager.ts)
-- [ ] Maintain Map<string, Prompt> registry
-- [ ] Implement listPrompts() method
-- [ ] Implement getPrompt(name) method
-- [ ] Implement hasPrompt(name) method
-- [ ] Handle precedence (custom > pre-shipped)
-- [ ] Write unit tests for all methods
-- [ ] Test precedence logic with duplicates
+- [x] Implement PromptManager (src/prompts/prompt-manager.ts)
+- [x] Maintain Map<string, Prompt> registry
+- [x] Implement listPrompts() method
+- [x] Implement getPrompt(name) method
+- [x] Implement hasPrompt(name) method
+- [x] Handle precedence (custom > pre-shipped)
+- [x] Write unit tests for all methods (33 tests passing)
+- [x] Test precedence logic with duplicates
 
 #### Milestone 9: Pre-shipped Prompts (Dependencies: none)
 
