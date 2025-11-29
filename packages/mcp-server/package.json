@@ -21,9 +21,10 @@
     "typecheck": "tsc"
   },
   "dependencies": {
+    "@hono/node-server": "1.19.6",
     "@modelcontextprotocol/sdk": "^1.23.0",
     "gray-matter": "^4.0.3",
-    "hono": "^4.6.14",
+    "hono": "4.10.7",
     "zod": "4.1.13"
   },
   "devDependencies": {

@@ -198,15 +198,18 @@ _None yet_
 
 #### Milestone 12: HTTP Transport (Dependencies: M10)
 
-- [ ] Install Hono dependency
-- [ ] Implement HTTP transport (src/transports/http.ts)
-- [ ] Create Hono app instance
-- [ ] Map HTTP requests to MCP messages
-- [ ] Handle MCP protocol over HTTP
-- [ ] Return HTTP responses
-- [ ] Configure port from ServerConfig
-- [ ] Write integration tests for HTTP communication
-- [ ] Test concurrent requests
+- [x] Install Hono dependency
+- [x] Implement HTTP transport (src/transports/http.ts)
+- [x] Create Hono app instance
+- [x] Map HTTP requests to MCP messages
+- [x] Handle MCP protocol over HTTP (StreamableHTTPServerTransport)
+- [x] Return HTTP responses
+- [x] Configure port from HttpTransportOptions
+- [x] Add health check endpoint
+- [x] Support stateful (sessions) and stateless modes
+- [x] Support JSON and SSE response modes
+- [x] Write integration tests for HTTP communication (14 tests passing)
+- [x] Test concurrent requests via multiple ports
 
 #### Milestone 13: Main Entry Points (Dependencies: M3, M11, M12)
 
