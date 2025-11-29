@@ -8,10 +8,10 @@ cd /Users/oliverjaegle/projects/privat/mcp-server/prompts/packages/mcp-server
 ## ✅ Status: Production Ready!
 - **166 tests passing** ✅
 - **Built and compiled** ✅  
-- **stdio transport working** ✅ **(RECOMMENDED)**
-- **HTTP transport** ⚠️ **EXPERIMENTAL**
+- **stdio transport working** ✅ **(RECOMMENDED for Claude Desktop)**
+- **HTTP transport** ✅ **WORKING** (for MCP Inspector, remote access)
 
-> **Note:** The stdio transport is fully functional and production-ready. The HTTP transport is experimental and may have compatibility issues with some MCP clients. For Claude Desktop and most MCP use cases, use stdio transport.
+> **Note:** Both transports are now functional! stdio is recommended for Claude Desktop (simpler, no session management). HTTP is great for MCP Inspector and remote access scenarios.
 
 ---
 
