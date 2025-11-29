@@ -10,8 +10,8 @@ export interface PromptArgument {
   name: string;
   /** Human-readable description */
   description: string;
-  /** Whether this argument is required */
-  required: boolean;
+  /** Whether this argument is required (defaults to false) */
+  required?: boolean;
 }
 
 /**

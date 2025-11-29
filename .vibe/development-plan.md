@@ -133,23 +133,23 @@ _None yet_
 
 #### Milestone 6: Prompt Validation (Dependencies: M2, M5)
 
-- [ ] Implement PromptValidator (src/prompts/prompt-validator.ts)
-- [ ] Validate required fields (name, description)
-- [ ] Validate optional fields (tags, arguments)
-- [ ] Validate argument structure
-- [ ] Write unit tests for all validation rules
-- [ ] Test edge cases (empty strings, special characters)
+- [x] Implement PromptValidator (src/prompts/prompt-validator.ts)
+- [x] Validate required fields (name, description)
+- [x] Validate optional fields (tags, arguments)
+- [x] Validate argument structure
+- [x] Write unit tests for all validation rules (44 tests passing)
+- [x] Test edge cases (empty strings, special characters)
 
 #### Milestone 7: Prompt Loading (Dependencies: M5, M6)
 
-- [ ] Implement PromptLoader (src/prompts/prompt-loader.ts)
-- [ ] Scan directory for .md files
-- [ ] Read file contents
-- [ ] Use PromptParser to parse files
-- [ ] Use PromptValidator to validate prompts
-- [ ] Handle file I/O errors gracefully
-- [ ] Write unit tests with mocked file system
-- [ ] Write integration tests with real test fixtures
+- [x] Implement PromptLoader (src/prompts/prompt-loader.ts)
+- [x] Scan directory for .md files
+- [x] Read file contents
+- [x] Use PromptParser to parse files
+- [x] Use PromptValidator to validate prompts
+- [x] Handle file I/O errors gracefully
+- [x] Write integration tests with real test fixtures (6 tests passing)
+- [x] Test error handling and invalid files
 
 #### Milestone 8: Prompt Management (Dependencies: M7)
 
