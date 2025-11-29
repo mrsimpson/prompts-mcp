@@ -97,7 +97,17 @@ export class HttpTransport {
       }
 
       try {
-        const req = c.req.raw;
+        // Parse the request body if it's a POST request
+        let parsedBody: unknown;
+        if (c.req.method === 'POST') {
+          try {
+            parsedBody = await c.req.json();
+          } catch (error) {
+            if (this.debug) {
+              this.logger.debug('HTTP transport: Failed to parse JSON body');
+            }
+          }
+        }
         
         // Create a promise that resolves when the response is ready
         const responseData = await new Promise<{
@@ -105,12 +115,62 @@ export class HttpTransport {
           headers: Record<string, string>;
           body: string;
         }>((resolve) => {
+          // Create a minimal IncomingMessage-like object from Hono request
+          const honoReq = c.req;
+          const headers: Record<string, string | string[]> = {};
+          
+          // Convert Hono headers to Node.js format
+          for (const [key, value] of Object.entries(honoReq.header())) {
+            headers[key.toLowerCase()] = value;
+          }
+          
+          const req = {
+            method: honoReq.method,
+            url: honoReq.url,
+            headers,
+            httpVersion: '1.1',
+            httpVersionMajor: 1,
+            httpVersionMinor: 1,
+          };
+          
           const res = {
             statusCode: 200,
             statusMessage: 'OK',
             _headers: {} as Record<string, string | string[]>,
             _body: '',
             headersSent: false,
+            _eventHandlers: {} as Record<string, Function[]>,
+            
+            // EventEmitter-like methods (minimal implementation)
+            on(event: string, handler: Function) {
+              if (!this._eventHandlers[event]) {
+                this._eventHandlers[event] = [];
+              }
+              this._eventHandlers[event].push(handler);
+              return this;
+            },
+            
+            once(event: string, handler: Function) {
+              const wrappedHandler = (...args: any[]) => {
+                handler(...args);
+                this.off(event, wrappedHandler);
+              };
+              return this.on(event, wrappedHandler);
+            },
+            
+            off(event: string, handler: Function) {
+              if (this._eventHandlers[event]) {
+                this._eventHandlers[event] = this._eventHandlers[event].filter(h => h !== handler);
+              }
+              return this;
+            },
+            
+            emit(event: string, ...args: any[]) {
+              if (this._eventHandlers[event]) {
+                this._eventHandlers[event].forEach(handler => handler(...args));
+              }
+              return true;
+            },
             
             setHeader(name: string, value: string | string[]) {
               this._headers[name.toLowerCase()] = value;
@@ -154,8 +214,9 @@ export class HttpTransport {
           };
 
           // Handle the request through MCP transport
+          // Pass the parsed body as the third argument
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          void this.transport!.handleRequest(req as any, res as any);
+          void this.transport!.handleRequest(req as any, res as any, parsedBody);
         });
         
         // Return Hono response
