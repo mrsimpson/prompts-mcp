@@ -28,41 +28,48 @@ Generate comprehensive, clear, and professional documentation for the provided c
 ## Documentation Requirements
 
 ### 1. Overview
+
 - Brief description of what the code does
 - Primary purpose and use cases
 - Key features or capabilities
 
 ### 2. API Documentation
+
 {{#if format}}
+
 - Format: {{format}}
-{{else}}
+  {{else}}
 - Use standard format for {{language}}
-{{/if}}
+  {{/if}}
 - Document all public functions/methods/classes
 - Include parameter types and descriptions
 - Document return values and types
 - Note any exceptions or errors that may be thrown
 
 ### 3. Usage Examples
+
 - Provide clear, practical examples
 - Show common use cases
 - Include edge cases if relevant
-{{#if audience}}
+  {{#if audience}}
 - Tailor examples for {{audience}}
-{{/if}}
+  {{/if}}
 
 ### 4. Code Comments
+
 - Add inline comments explaining complex logic
 - Document any non-obvious decisions or trade-offs
 - Explain "why" not just "what"
 
 ### 5. Additional Information
+
 - Prerequisites or dependencies
 - Configuration requirements (if any)
 - Performance considerations
 - Known limitations or gotchas
 
 ## Style Guidelines
+
 - Use clear, concise language
 - Write in active voice
 - Include code examples with proper syntax highlighting
@@ -70,6 +77,7 @@ Generate comprehensive, clear, and professional documentation for the provided c
 - Make it scannable and easy to navigate
 
 **Code to Document:**
+
 ```{{language}}
 {{code}}
 ```

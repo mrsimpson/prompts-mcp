@@ -2,10 +2,10 @@
  * Configuration loader and manager
  */
 
-import type { ServerConfig } from './types.js';
-import { DEFAULT_CONFIG } from './defaults.js';
-import { loadConfigFromEnv } from './env.js';
-import { ConfigurationError } from '../utils/errors.js';
+import type { ServerConfig } from "./types.js";
+import { DEFAULT_CONFIG } from "./defaults.js";
+import { loadConfigFromEnv } from "./env.js";
+import { ConfigurationError } from "../utils/errors.js";
 
 /**
  * Validate server configuration
@@ -13,12 +13,14 @@ import { ConfigurationError } from '../utils/errors.js';
 function validateConfig(config: ServerConfig): void {
   // At least one transport must be enabled
   if (!config.enableStdio && !config.enableHttp) {
-    throw new ConfigurationError('At least one transport (stdio or HTTP) must be enabled');
+    throw new ConfigurationError(
+      "At least one transport (stdio or HTTP) must be enabled"
+    );
   }
 
   // Validate custom prompts directory if provided
-  if (config.customPromptsDir && typeof config.customPromptsDir !== 'string') {
-    throw new ConfigurationError('customPromptsDir must be a string');
+  if (config.customPromptsDir && typeof config.customPromptsDir !== "string") {
+    throw new ConfigurationError("customPromptsDir must be a string");
   }
 }
 

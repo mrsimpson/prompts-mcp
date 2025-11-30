@@ -85,15 +85,15 @@ curl http://localhost:3000/health
 
 The server can be configured via environment variables:
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `SERVER_NAME` | Server name for MCP identification | `mcp-prompts-server` |
-| `SERVER_VERSION` | Server version | `0.1.0` |
-| `CUSTOM_PROMPTS_DIR` | Path to custom prompts directory | `undefined` |
-| `HTTP_PORT` | HTTP server port | `3000` |
-| `LOG_LEVEL` | Logging level: `error`, `warn`, `info`, `debug` | `info` |
-| `ENABLE_STDIO` | Enable stdio transport | `true` |
-| `ENABLE_HTTP` | Enable HTTP transport | `false` |
+| Variable             | Description                                     | Default              |
+| -------------------- | ----------------------------------------------- | -------------------- |
+| `SERVER_NAME`        | Server name for MCP identification              | `mcp-prompts-server` |
+| `SERVER_VERSION`     | Server version                                  | `0.1.0`              |
+| `CUSTOM_PROMPTS_DIR` | Path to custom prompts directory                | `undefined`          |
+| `HTTP_PORT`          | HTTP server port                                | `3000`               |
+| `LOG_LEVEL`          | Logging level: `error`, `warn`, `info`, `debug` | `info`               |
+| `ENABLE_STDIO`       | Enable stdio transport                          | `true`               |
+| `ENABLE_HTTP`        | Enable HTTP transport                           | `false`              |
 
 ## Prompt File Format
 
@@ -122,6 +122,7 @@ Please review the following {{language}} code:
 \`\`\`
 
 Provide feedback on:
+
 1. Code quality and style
 2. Potential bugs or issues
 3. Performance optimizations
@@ -143,29 +144,36 @@ Provide feedback on:
 Prompts use Handlebars templating for parameter substitution. The server performs template rendering before sending the prompt to the client.
 
 **Variable substitution:**
+
 ```handlebars
 Hello {{name}}! Your code is in {{language}}.
 ```
 
 **Conditional blocks (for optional parameters):**
+
 ```handlebars
 {{#if language}}
-Programming language: {{language}}
+  Programming language:
+  {{language}}
 {{/if}}
 
 {{#if focus}}
-Focus area: {{focus}}
+  Focus area:
+  {{focus}}
 {{/if}}
 ```
 
 **Iteration (for array parameters):**
+
 ```handlebars
 {{#each items}}
-- {{this}}
+  -
+  {{this}}
 {{/each}}
 ```
 
 **Important notes:**
+
 - Template variables use `{{variable}}` syntax
 - Conditionals use `{{#if variable}}...{{/if}}`
 - The server automatically escapes HTML by default, but disables escaping for prompts to preserve code formatting
@@ -192,7 +200,9 @@ To use with Claude Desktop, add this server to your Claude configuration:
   "mcpServers": {
     "prompts": {
       "command": "node",
-      "args": ["/absolute/path/to/mcp-server/prompts/packages/mcp-server/dist/bin.js"],
+      "args": [
+        "/absolute/path/to/mcp-server/prompts/packages/mcp-server/dist/bin.js"
+      ],
       "env": {
         "ENABLE_STDIO": "true",
         "ENABLE_HTTP": "false",
@@ -264,6 +274,7 @@ npm run build
 ### Server won't start
 
 1. Check that at least one transport is enabled:
+
    ```bash
    ENABLE_STDIO=true node dist/bin.js
    ```
@@ -276,6 +287,7 @@ npm run build
 ### No prompts available
 
 1. Verify pre-shipped prompts directory exists:
+
    ```bash
    ls resources/prompts/
    ```
@@ -288,6 +300,7 @@ npm run build
 ### HTTP port already in use
 
 Change the port number:
+
 ```bash
 HTTP_PORT=3001 ENABLE_HTTP=true node dist/bin.js
 ```

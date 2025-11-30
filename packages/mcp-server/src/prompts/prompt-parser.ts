@@ -2,10 +2,10 @@
  * Prompt parser - extracts front matter and content from markdown files
  */
 
-import matter from 'gray-matter';
-import type { Prompt, ParseResult, PromptFrontMatter } from './types.js';
-import { isPromptFrontMatter } from './types.js';
-import { PromptParseError } from '../utils/errors.js';
+import matter from "gray-matter";
+import type { Prompt, ParseResult, PromptFrontMatter } from "./types.js";
+import { isPromptFrontMatter } from "./types.js";
+import { PromptParseError } from "../utils/errors.js";
 
 /**
  * Parse a prompt markdown file
@@ -18,7 +18,7 @@ import { PromptParseError } from '../utils/errors.js';
 export function parsePromptFile(
   filePath: string,
   content: string,
-  source: 'pre-shipped' | 'custom',
+  source: "pre-shipped" | "custom"
 ): ParseResult {
   try {
     // Parse front matter using gray-matter
@@ -29,10 +29,10 @@ export function parsePromptFile(
       return {
         success: false,
         error: {
-          message: 'Invalid front matter structure',
+          message: "Invalid front matter structure",
           filePath,
-          details: 'Front matter must contain name and description fields',
-        },
+          details: "Front matter must contain name and description fields"
+        }
       };
     }
 
@@ -44,10 +44,10 @@ export function parsePromptFile(
       return {
         success: false,
         error: {
-          message: 'Empty prompt content',
+          message: "Empty prompt content",
           filePath,
-          details: 'Prompt must have non-empty markdown content',
-        },
+          details: "Prompt must have non-empty markdown content"
+        }
       };
     }
 
@@ -61,13 +61,13 @@ export function parsePromptFile(
       metadata: {
         filePath,
         source,
-        loadedAt: new Date(),
-      },
+        loadedAt: new Date()
+      }
     };
 
     return {
       success: true,
-      prompt,
+      prompt
     };
   } catch (error) {
     // Handle gray-matter parsing errors (usually YAML syntax errors)
@@ -75,10 +75,10 @@ export function parsePromptFile(
     return {
       success: false,
       error: {
-        message: 'Failed to parse prompt file',
+        message: "Failed to parse prompt file",
         filePath,
-        details: message,
-      },
+        details: message
+      }
     };
   }
 }
@@ -88,7 +88,11 @@ export function parsePromptFile(
  * Returns successful prompts and logs errors for failed ones
  */
 export function parsePromptFiles(
-  files: Array<{ path: string; content: string; source: 'pre-shipped' | 'custom' }>,
+  files: Array<{
+    path: string;
+    content: string;
+    source: "pre-shipped" | "custom";
+  }>
 ): { prompts: Prompt[]; errors: PromptParseError[] } {
   const prompts: Prompt[] = [];
   const errors: PromptParseError[] = [];
@@ -100,7 +104,11 @@ export function parsePromptFiles(
       prompts.push(result.prompt);
     } else if (result.error) {
       errors.push(
-        new PromptParseError(result.error.message, result.error.filePath, result.error.details),
+        new PromptParseError(
+          result.error.message,
+          result.error.filePath,
+          result.error.details
+        )
       );
     }
   }

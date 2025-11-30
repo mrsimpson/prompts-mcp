@@ -26,18 +26,23 @@ arguments:
 Analyze the provided code and suggest refactoring improvements to enhance quality, maintainability, and design.
 
 {{#if goal}}
+
 ## Refactoring Goal
+
 {{goal}}
 {{/if}}
 
 {{#if constraints}}
+
 ## Constraints
+
 {{constraints}}
 {{/if}}
 
 ## Analysis Framework
 
 ### 1. Current State Assessment
+
 - **Code Structure**: Analyze current organization and design
 - **Complexity**: Identify areas of high complexity or code smells
 - **Patterns**: Note existing patterns (good and bad)
@@ -46,12 +51,14 @@ Analyze the provided code and suggest refactoring improvements to enhance qualit
 ### 2. Refactoring Opportunities
 
 #### A. Structural Improvements
+
 - **Modularity**: Break down large functions/classes
 - **Separation of Concerns**: Identify mixed responsibilities
 - **Naming**: Improve clarity of names
 - **Code Duplication**: Find and eliminate redundancy
 
 #### B. Design Patterns
+
 - Identify applicable design patterns:
   - Creational (Factory, Builder, Singleton, etc.)
   - Structural (Adapter, Decorator, Facade, etc.)
@@ -59,12 +66,14 @@ Analyze the provided code and suggest refactoring improvements to enhance qualit
 - Suggest where patterns could simplify design
 
 #### C. Modern {{language}} Features
+
 - Use modern language features and idioms
 - Replace verbose code with concise alternatives
 - Improve type safety (if applicable)
 - Enhance error handling
 
 #### D. Performance Optimizations
+
 - Identify inefficient algorithms or data structures
 - Suggest performance improvements
 - Note any premature optimizations to remove
@@ -74,15 +83,18 @@ Analyze the provided code and suggest refactoring improvements to enhance qualit
 Provide a prioritized refactoring plan:
 
 **Phase 1: Quick Wins** (low risk, high value)
+
 - Simple improvements that can be done immediately
 - Automated refactoring tool opportunities
 
 **Phase 2: Structural Changes** (medium risk)
+
 - Function/method extraction and organization
 - Class/module restructuring
 - Interface improvements
 
 **Phase 3: Design Improvements** (requires testing)
+
 - Design pattern implementations
 - Architectural changes
 - API redesigns
@@ -90,17 +102,21 @@ Provide a prioritized refactoring plan:
 ### 4. Refactored Code
 
 Provide refactored code examples showing:
+
 - Before/after comparisons for key changes
 - Complete refactored version if scope is manageable
 - Detailed comments explaining changes
 
 ### 5. Testing Considerations
+
 - Suggest test cases to verify behavior is preserved
 - Identify areas needing additional test coverage
 - Note any behavior changes (if intentional)
 
 ### 6. Migration Path
+
 If changes are significant:
+
 - Step-by-step migration approach
 - Backward compatibility strategies
 - Deprecation timeline (if applicable)
@@ -108,6 +124,7 @@ If changes are significant:
 ---
 
 **Code to Refactor:**
+
 ```{{language}}
 {{code}}
 ```

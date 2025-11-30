@@ -1,5 +1,5 @@
-import type { PromptArgument } from './types.js';
-import { PromptValidationError } from '../utils/errors.js';
+import type { PromptArgument } from "./types.js";
+import { PromptValidationError } from "../utils/errors.js";
 
 /**
  * Input for validation - subset of Prompt fields that need validation
@@ -32,7 +32,11 @@ export class PromptValidator {
   static validate(prompt: ValidatablePrompt, filePath: string): void {
     const result = this.validatePrompt(prompt);
     if (!result.valid) {
-      throw new PromptValidationError('Prompt validation failed', filePath, result.errors);
+      throw new PromptValidationError(
+        "Prompt validation failed",
+        filePath,
+        result.errors
+      );
     }
   }
 
@@ -45,15 +49,15 @@ export class PromptValidator {
     const errors: string[] = [];
 
     // Validate required fields
-    if (!prompt.name && prompt.name !== '') {
-      errors.push('Prompt name is required');
+    if (!prompt.name && prompt.name !== "") {
+      errors.push("Prompt name is required");
     }
     if (prompt.name !== undefined) {
       errors.push(...this.validateName(prompt.name));
     }
 
-    if (!prompt.description && prompt.description !== '') {
-      errors.push('Prompt description is required');
+    if (!prompt.description && prompt.description !== "") {
+      errors.push("Prompt description is required");
     }
     if (prompt.description !== undefined) {
       errors.push(...this.validateDescription(prompt.description));
@@ -70,7 +74,7 @@ export class PromptValidator {
 
     return {
       valid: errors.length === 0,
-      errors,
+      errors
     };
   }
 
@@ -81,22 +85,24 @@ export class PromptValidator {
   private static validateName(name: string): string[] {
     const errors: string[] = [];
 
-    if (typeof name !== 'string') {
-      errors.push('Prompt name must be a string');
+    if (typeof name !== "string") {
+      errors.push("Prompt name must be a string");
       return errors;
     }
 
     if (name.trim().length === 0) {
-      errors.push('Prompt name cannot be empty or whitespace only');
+      errors.push("Prompt name cannot be empty or whitespace only");
     }
 
     if (name.length > 100) {
-      errors.push('Prompt name must be 100 characters or less');
+      errors.push("Prompt name must be 100 characters or less");
     }
 
     // Name should be a valid identifier (alphanumeric, hyphens, underscores)
     if (!/^[a-zA-Z0-9_-]+$/.test(name)) {
-      errors.push('Prompt name must contain only alphanumeric characters, hyphens, and underscores');
+      errors.push(
+        "Prompt name must contain only alphanumeric characters, hyphens, and underscores"
+      );
     }
 
     return errors;
@@ -109,17 +115,17 @@ export class PromptValidator {
   private static validateDescription(description: string): string[] {
     const errors: string[] = [];
 
-    if (typeof description !== 'string') {
-      errors.push('Prompt description must be a string');
+    if (typeof description !== "string") {
+      errors.push("Prompt description must be a string");
       return errors;
     }
 
     if (description.trim().length === 0) {
-      errors.push('Prompt description cannot be empty or whitespace only');
+      errors.push("Prompt description cannot be empty or whitespace only");
     }
 
     if (description.length > 500) {
-      errors.push('Prompt description must be 500 characters or less');
+      errors.push("Prompt description must be 500 characters or less");
     }
 
     return errors;
@@ -133,18 +139,18 @@ export class PromptValidator {
     const errors: string[] = [];
 
     if (!Array.isArray(tags)) {
-      errors.push('Prompt tags must be an array');
+      errors.push("Prompt tags must be an array");
       return errors;
     }
 
     for (const tag of tags) {
-      if (typeof tag !== 'string') {
-        errors.push('Each tag must be a string');
+      if (typeof tag !== "string") {
+        errors.push("Each tag must be a string");
         continue;
       }
 
       if (tag.trim().length === 0) {
-        errors.push('Tags cannot be empty or whitespace only');
+        errors.push("Tags cannot be empty or whitespace only");
       }
 
       if (tag.length > 50) {
@@ -155,7 +161,7 @@ export class PromptValidator {
     // Check for duplicate tags
     const uniqueTags = new Set(tags);
     if (uniqueTags.size !== tags.length) {
-      errors.push('Duplicate tags are not allowed');
+      errors.push("Duplicate tags are not allowed");
     }
 
     return errors;
@@ -169,7 +175,7 @@ export class PromptValidator {
     const errors: string[] = [];
 
     if (!Array.isArray(args)) {
-      errors.push('Prompt arguments must be an array');
+      errors.push("Prompt arguments must be an array");
       return errors;
     }
 
@@ -195,42 +201,55 @@ export class PromptValidator {
   private static validateArgument(arg: PromptArgument): string[] {
     const errors: string[] = [];
 
-    if (typeof arg !== 'object' || arg === null) {
-      errors.push('Each argument must be an object');
+    if (typeof arg !== "object" || arg === null) {
+      errors.push("Each argument must be an object");
       return errors;
     }
 
     // Validate name
-    if ((!arg.name && arg.name !== '') || typeof arg.name !== 'string') {
-      errors.push('Argument name is required and must be a string');
+    if ((!arg.name && arg.name !== "") || typeof arg.name !== "string") {
+      errors.push("Argument name is required and must be a string");
     }
-    if (typeof arg.name === 'string') {
+    if (typeof arg.name === "string") {
       if (arg.name.trim().length === 0) {
-        errors.push('Argument name cannot be empty or whitespace only');
+        errors.push("Argument name cannot be empty or whitespace only");
       }
 
       if (arg.name.length > 50) {
-        errors.push(`Argument name "${arg.name}" must be 50 characters or less`);
+        errors.push(
+          `Argument name "${arg.name}" must be 50 characters or less`
+        );
       }
     }
 
     // Validate description
-    if ((!arg.description && arg.description !== '') || typeof arg.description !== 'string') {
-      errors.push(`Argument description is required and must be a string for argument: ${arg.name || 'unnamed'}`);
+    if (
+      (!arg.description && arg.description !== "") ||
+      typeof arg.description !== "string"
+    ) {
+      errors.push(
+        `Argument description is required and must be a string for argument: ${arg.name || "unnamed"}`
+      );
     }
-    if (typeof arg.description === 'string') {
+    if (typeof arg.description === "string") {
       if (arg.description.trim().length === 0) {
-        errors.push(`Argument description cannot be empty for argument: ${arg.name}`);
+        errors.push(
+          `Argument description cannot be empty for argument: ${arg.name}`
+        );
       }
 
       if (arg.description.length > 200) {
-        errors.push(`Argument description must be 200 characters or less for argument: ${arg.name}`);
+        errors.push(
+          `Argument description must be 200 characters or less for argument: ${arg.name}`
+        );
       }
     }
 
     // Validate required field (optional)
-    if (arg.required !== undefined && typeof arg.required !== 'boolean') {
-      errors.push(`Argument 'required' field must be a boolean for argument: ${arg.name || 'unnamed'}`);
+    if (arg.required !== undefined && typeof arg.required !== "boolean") {
+      errors.push(
+        `Argument 'required' field must be a boolean for argument: ${arg.name || "unnamed"}`
+      );
     }
 
     return errors;

@@ -1,8 +1,8 @@
-import type { Prompt } from './types.js';
-import { PromptNotFoundError } from '../utils/errors.js';
-import { createLogger } from '../utils/logger.js';
+import type { Prompt } from "./types.js";
+import { PromptNotFoundError } from "../utils/errors.js";
+import { createLogger } from "../utils/logger.js";
 
-const logger = createLogger('PromptManager');
+const logger = createLogger("PromptManager");
 
 /**
  * Manages a collection of prompts with precedence rules
@@ -20,26 +20,42 @@ export class PromptManager {
     const existing = this.prompts.get(prompt.name);
 
     if (existing && !allowOverride) {
-      logger.warn(`Prompt ${prompt.name} already exists and override is disabled`);
+      logger.warn(
+        `Prompt ${prompt.name} already exists and override is disabled`
+      );
       return;
     }
 
     // Custom prompts override pre-shipped ones
     if (existing) {
-      if (prompt.metadata.source === 'custom' && existing.metadata.source === 'pre-shipped') {
-        logger.info(`Custom prompt ${prompt.name} overrides pre-shipped version`);
+      if (
+        prompt.metadata.source === "custom" &&
+        existing.metadata.source === "pre-shipped"
+      ) {
+        logger.info(
+          `Custom prompt ${prompt.name} overrides pre-shipped version`
+        );
         this.prompts.set(prompt.name, prompt);
-      } else if (prompt.metadata.source === 'pre-shipped' && existing.metadata.source === 'custom') {
-        logger.debug(`Keeping custom prompt ${prompt.name}, ignoring pre-shipped version`);
+      } else if (
+        prompt.metadata.source === "pre-shipped" &&
+        existing.metadata.source === "custom"
+      ) {
+        logger.debug(
+          `Keeping custom prompt ${prompt.name}, ignoring pre-shipped version`
+        );
         // Don't override - custom takes precedence
       } else {
         // Same source - last one wins
-        logger.warn(`Duplicate prompt ${prompt.name} from ${prompt.metadata.source}, using latest`);
+        logger.warn(
+          `Duplicate prompt ${prompt.name} from ${prompt.metadata.source}, using latest`
+        );
         this.prompts.set(prompt.name, prompt);
       }
     } else {
       this.prompts.set(prompt.name, prompt);
-      logger.debug(`Registered prompt: ${prompt.name} (${prompt.metadata.source})`);
+      logger.debug(
+        `Registered prompt: ${prompt.name} (${prompt.metadata.source})`
+      );
     }
   }
 
@@ -98,8 +114,10 @@ export class PromptManager {
    * @param source - Source to filter by ('pre-shipped' or 'custom')
    * @returns Array of prompts from the specified source
    */
-  getPromptsBySource(source: 'pre-shipped' | 'custom'): Prompt[] {
-    return this.listPrompts().filter((prompt) => prompt.metadata.source === source);
+  getPromptsBySource(source: "pre-shipped" | "custom"): Prompt[] {
+    return this.listPrompts().filter(
+      (prompt) => prompt.metadata.source === source
+    );
   }
 
   /**
@@ -107,7 +125,7 @@ export class PromptManager {
    */
   clear(): void {
     this.prompts.clear();
-    logger.debug('Cleared all prompts');
+    logger.debug("Cleared all prompts");
   }
 
   /**

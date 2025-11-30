@@ -21,7 +21,7 @@ export interface PromptMetadata {
   /** Path to the source file */
   filePath: string;
   /** Origin of the prompt */
-  source: 'pre-shipped' | 'custom';
+  source: "pre-shipped" | "custom";
   /** When the prompt was loaded */
   loadedAt: Date;
 }
@@ -85,12 +85,12 @@ export interface ValidationResult {
  * Type guard to check if an object is a PromptArgument
  */
 export function isPromptArgument(obj: unknown): obj is PromptArgument {
-  if (typeof obj !== 'object' || obj === null) return false;
+  if (typeof obj !== "object" || obj === null) return false;
   const arg = obj as Record<string, unknown>;
   return (
-    typeof arg['name'] === 'string' &&
-    typeof arg['description'] === 'string' &&
-    typeof arg['required'] === 'boolean'
+    typeof arg["name"] === "string" &&
+    typeof arg["description"] === "string" &&
+    typeof arg["required"] === "boolean"
   );
 }
 
@@ -98,23 +98,23 @@ export function isPromptArgument(obj: unknown): obj is PromptArgument {
  * Type guard to check if an object is valid PromptFrontMatter
  */
 export function isPromptFrontMatter(obj: unknown): obj is PromptFrontMatter {
-  if (typeof obj !== 'object' || obj === null) return false;
+  if (typeof obj !== "object" || obj === null) return false;
   const fm = obj as Record<string, unknown>;
 
   // Required fields
-  if (typeof fm['name'] !== 'string' || !fm['name']) return false;
-  if (typeof fm['description'] !== 'string' || !fm['description']) return false;
+  if (typeof fm["name"] !== "string" || !fm["name"]) return false;
+  if (typeof fm["description"] !== "string" || !fm["description"]) return false;
 
   // Optional tags field
-  if (fm['tags'] !== undefined) {
-    if (!Array.isArray(fm['tags'])) return false;
-    if (!fm['tags'].every((tag) => typeof tag === 'string')) return false;
+  if (fm["tags"] !== undefined) {
+    if (!Array.isArray(fm["tags"])) return false;
+    if (!fm["tags"].every((tag) => typeof tag === "string")) return false;
   }
 
   // Optional arguments field
-  if (fm['arguments'] !== undefined) {
-    if (!Array.isArray(fm['arguments'])) return false;
-    if (!fm['arguments'].every(isPromptArgument)) return false;
+  if (fm["arguments"] !== undefined) {
+    if (!Array.isArray(fm["arguments"])) return false;
+    if (!fm["arguments"].every(isPromptArgument)) return false;
   }
 
   return true;

@@ -5,12 +5,15 @@
  * the MCP SDK's StreamableHTTPServerTransport.
  */
 
-import { Hono } from 'hono';
-import { serve } from '@hono/node-server';
-import { StreamableHTTPServerTransport, type StreamableHTTPServerTransportOptions } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
-import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { createLogger, type Logger } from '../utils/logger.js';
-import { randomUUID } from 'node:crypto';
+import { Hono } from "hono";
+import { serve } from "@hono/node-server";
+import {
+  StreamableHTTPServerTransport,
+  type StreamableHTTPServerTransportOptions
+} from "@modelcontextprotocol/sdk/server/streamableHttp.js";
+import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { createLogger, type Logger } from "../utils/logger.js";
+import { randomUUID } from "node:crypto";
 
 /**
  * HTTP transport options
@@ -64,7 +67,7 @@ export class HttpTransport {
   private enableJsonResponse: boolean;
 
   constructor(options: HttpTransportOptions) {
-    this.logger = options.logger ?? createLogger('HttpTransport');
+    this.logger = options.logger ?? createLogger("HttpTransport");
     this.debug = options.debug ?? false;
     this.port = options.port;
     this.enableSessions = options.enableSessions ?? true;
@@ -82,33 +85,33 @@ export class HttpTransport {
    */
   private setupRoutes(): void {
     // Health check endpoint
-    this.app.get('/health', (c) => {
+    this.app.get("/health", (c) => {
       return c.json({
-        status: 'ok',
-        transport: 'http',
-        timestamp: new Date().toISOString(),
+        status: "ok",
+        transport: "http",
+        timestamp: new Date().toISOString()
       });
     });
 
     // MCP endpoint - handle all HTTP methods
-    this.app.all('/mcp', async (c) => {
+    this.app.all("/mcp", async (c) => {
       if (!this.transport) {
-        return c.json({ error: 'Transport not initialized' }, 503);
+        return c.json({ error: "Transport not initialized" }, 503);
       }
 
       try {
         // Parse the request body if it's a POST request
         let parsedBody: unknown;
-        if (c.req.method === 'POST') {
+        if (c.req.method === "POST") {
           try {
             parsedBody = await c.req.json();
           } catch {
             if (this.debug) {
-              this.logger.debug('HTTP transport: Failed to parse JSON body');
+              this.logger.debug("HTTP transport: Failed to parse JSON body");
             }
           }
         }
-        
+
         // Create a promise that resolves when the response is ready
         const responseData = await new Promise<{
           statusCode: number;
@@ -118,29 +121,32 @@ export class HttpTransport {
           // Create a minimal IncomingMessage-like object from Hono request
           const honoReq = c.req;
           const headers: Record<string, string | string[]> = {};
-          
+
           // Convert Hono headers to Node.js format
           for (const [key, value] of Object.entries(honoReq.header())) {
             headers[key.toLowerCase()] = value;
           }
-          
+
           const req = {
             method: honoReq.method,
             url: honoReq.url,
             headers,
-            httpVersion: '1.1',
+            httpVersion: "1.1",
             httpVersionMajor: 1,
-            httpVersionMinor: 1,
+            httpVersionMinor: 1
           };
-          
+
           const res = {
             statusCode: 200,
-            statusMessage: 'OK',
+            statusMessage: "OK",
             _headers: {} as Record<string, string | string[]>,
-            _body: '',
+            _body: "",
             headersSent: false,
-            _eventHandlers: {} as Record<string, ((...args: unknown[]) => void)[]>,
-            
+            _eventHandlers: {} as Record<
+              string,
+              ((...args: unknown[]) => void)[]
+            >,
+
             // EventEmitter-like methods (minimal implementation)
             on(event: string, handler: (...args: unknown[]) => void) {
               if (!this._eventHandlers[event]) {
@@ -149,7 +155,7 @@ export class HttpTransport {
               this._eventHandlers[event].push(handler);
               return this;
             },
-            
+
             once(event: string, handler: (...args: unknown[]) => void) {
               const wrappedHandler = (...args: unknown[]) => {
                 handler(...args);
@@ -157,27 +163,34 @@ export class HttpTransport {
               };
               return this.on(event, wrappedHandler);
             },
-            
+
             off(event: string, handler: (...args: unknown[]) => void) {
               if (this._eventHandlers[event]) {
-                this._eventHandlers[event] = this._eventHandlers[event].filter(h => h !== handler);
+                this._eventHandlers[event] = this._eventHandlers[event].filter(
+                  (h) => h !== handler
+                );
               }
               return this;
             },
-            
+
             emit(event: string, ...args: unknown[]) {
               if (this._eventHandlers[event]) {
-                this._eventHandlers[event].forEach(handler => handler(...args));
+                this._eventHandlers[event].forEach((handler) =>
+                  handler(...args)
+                );
               }
               return true;
             },
-            
+
             setHeader(name: string, value: string | string[]) {
               this._headers[name.toLowerCase()] = value;
               return this;
             },
-            
-            writeHead(statusCode: number, headers?: Record<string, string | string[]>) {
+
+            writeHead(
+              statusCode: number,
+              headers?: Record<string, string | string[]>
+            ) {
               this.statusCode = statusCode;
               if (headers) {
                 Object.entries(headers).forEach(([key, value]) => {
@@ -187,52 +200,59 @@ export class HttpTransport {
               this.headersSent = true;
               return this; // Return this for chaining support
             },
-            
+
             flushHeaders() {
               // Mark headers as sent
               this.headersSent = true;
             },
-            
+
             write(chunk: string | Buffer) {
               // For SSE streaming, accumulate chunks
               this._body += chunk.toString();
               return true;
             },
-            
+
             end(data?: string | Buffer) {
               if (data) {
                 this.write(data);
               }
-              
+
               // Build response data
               const headers: Record<string, string> = {};
               Object.entries(this._headers).forEach(([key, value]) => {
-                headers[key] = Array.isArray(value) ? value.join(', ') : value;
+                headers[key] = Array.isArray(value) ? value.join(", ") : value;
               });
-              
+
               resolve({
                 statusCode: this.statusCode,
                 headers,
-                body: this._body,
+                body: this._body
               });
-            },
+            }
           };
 
           // Handle the request through MCP transport
           // Pass the parsed body as the third argument
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          void this.transport!.handleRequest(req as any, res as any, parsedBody);
+          void this.transport!.handleRequest(
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            req as any,
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            res as any,
+            parsedBody
+          );
         });
-        
+
         // Return Hono response
-        return new Response(responseData.body || '', {
+        return new Response(responseData.body || "", {
           status: responseData.statusCode,
-          headers: responseData.headers,
+          headers: responseData.headers
         });
       } catch (error) {
         const err = error as Error;
-        this.logger.error(`HTTP transport: Request handling error: ${err.message}`);
-        return c.json({ error: 'Internal server error' }, 500);
+        this.logger.error(
+          `HTTP transport: Request handling error: ${err.message}`
+        );
+        return c.json({ error: "Internal server error" }, 500);
       }
     });
   }
@@ -249,15 +269,19 @@ export class HttpTransport {
     try {
       // Create MCP StreamableHTTP transport
       const options: StreamableHTTPServerTransportOptions = {
-        sessionIdGenerator: this.enableSessions ? () => randomUUID() : undefined,
-        enableJsonResponse: this.enableJsonResponse,
+        sessionIdGenerator: this.enableSessions
+          ? () => randomUUID()
+          : undefined,
+        enableJsonResponse: this.enableJsonResponse
       };
 
       // Add optional callbacks only if sessions are enabled
       if (this.enableSessions) {
         options.onsessioninitialized = (sessionId) => {
           if (this.debug) {
-            this.logger.debug(`HTTP transport: Session initialized: ${sessionId}`);
+            this.logger.debug(
+              `HTTP transport: Session initialized: ${sessionId}`
+            );
           }
         };
         options.onsessionclosed = (sessionId) => {
@@ -270,43 +294,51 @@ export class HttpTransport {
       this.transport = new StreamableHTTPServerTransport(options);
 
       if (this.debug) {
-        this.logger.debug('HTTP transport: Connecting MCP server to transport');
+        this.logger.debug("HTTP transport: Connecting MCP server to transport");
       }
 
       // Connect server to transport
       await server.connect(this.transport);
 
       if (this.debug) {
-        this.logger.debug(`HTTP transport: Starting HTTP server on port ${this.port}`);
+        this.logger.debug(
+          `HTTP transport: Starting HTTP server on port ${this.port}`
+        );
       }
 
       // Start HTTP server
       this.httpServer = serve({
         fetch: this.app.fetch,
-        port: this.port,
+        port: this.port
       });
 
-      this.logger.info(`HTTP transport: Server started on http://localhost:${this.port}`);
-      this.logger.info(`HTTP transport: MCP endpoint: http://localhost:${this.port}/mcp`);
-      this.logger.info(`HTTP transport: Health check: http://localhost:${this.port}/health`);
+      this.logger.info(
+        `HTTP transport: Server started on http://localhost:${this.port}`
+      );
+      this.logger.info(
+        `HTTP transport: MCP endpoint: http://localhost:${this.port}/mcp`
+      );
+      this.logger.info(
+        `HTTP transport: Health check: http://localhost:${this.port}/health`
+      );
 
       if (this.debug) {
         this.logger.debug(
-          `HTTP transport: Mode: ${this.enableSessions ? 'stateful (sessions enabled)' : 'stateless'}`
+          `HTTP transport: Mode: ${this.enableSessions ? "stateful (sessions enabled)" : "stateless"}`
         );
         this.logger.debug(
-          `HTTP transport: Response type: ${this.enableJsonResponse ? 'JSON' : 'SSE streaming'}`
+          `HTTP transport: Response type: ${this.enableJsonResponse ? "JSON" : "SSE streaming"}`
         );
       }
     } catch (error) {
       const err = error as Error;
       this.logger.error(`HTTP transport: Failed to start: ${err.message}`);
-      
+
       // Clean up on failure
       this.transport = null;
       this.server = null;
       this.httpServer = null;
-      
+
       throw error;
     }
   }
@@ -322,7 +354,7 @@ export class HttpTransport {
     }
 
     if (this.debug) {
-      this.logger.debug('HTTP transport: Stopping transport');
+      this.logger.debug("HTTP transport: Stopping transport");
     }
 
     try {
@@ -349,10 +381,12 @@ export class HttpTransport {
 
       this.server = null;
 
-      this.logger.info('HTTP transport: Server stopped');
+      this.logger.info("HTTP transport: Server stopped");
     } catch (error) {
       const err = error as Error;
-      this.logger.error(`HTTP transport: Error during shutdown: ${err.message}`);
+      this.logger.error(
+        `HTTP transport: Error during shutdown: ${err.message}`
+      );
       throw error;
     }
   }
@@ -361,7 +395,11 @@ export class HttpTransport {
    * Check if transport is running
    */
   isRunning(): boolean {
-    return this.httpServer !== null && this.transport !== null && this.server !== null;
+    return (
+      this.httpServer !== null &&
+      this.transport !== null &&
+      this.server !== null
+    );
   }
 
   /**

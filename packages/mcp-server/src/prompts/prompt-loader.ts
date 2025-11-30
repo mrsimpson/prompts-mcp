@@ -1,12 +1,12 @@
-import * as fs from 'node:fs/promises';
-import * as path from 'node:path';
-import type { Prompt } from './types.js';
-import { parsePromptFile } from './prompt-parser.js';
-import { PromptValidator } from './prompt-validator.js';
-import { createLogger } from '../utils/logger.js';
-import { PromptParseError } from '../utils/errors.js';
+import * as fs from "node:fs/promises";
+import * as path from "node:path";
+import type { Prompt } from "./types.js";
+import { parsePromptFile } from "./prompt-parser.js";
+import { PromptValidator } from "./prompt-validator.js";
+import { createLogger } from "../utils/logger.js";
+import { PromptParseError } from "../utils/errors.js";
 
-const logger = createLogger('PromptLoader');
+const logger = createLogger("PromptLoader");
 
 /**
  * Result of loading prompts from a directory
@@ -42,13 +42,18 @@ export class PromptLoader {
           prompts.push(prompt);
           logger.debug(`Loaded prompt: ${prompt.name} from ${filePath}`);
         } catch (error) {
-          const errorObj = error instanceof Error ? error : new Error(String(error));
+          const errorObj =
+            error instanceof Error ? error : new Error(String(error));
           errors.push({ filePath, error: errorObj });
-          logger.warn(`Failed to load prompt from ${filePath}: ${errorObj.message}`);
+          logger.warn(
+            `Failed to load prompt from ${filePath}: ${errorObj.message}`
+          );
         }
       }
 
-      logger.info(`Successfully loaded ${prompts.length} prompt(s), ${errors.length} error(s)`);
+      logger.info(
+        `Successfully loaded ${prompts.length} prompt(s), ${errors.length} error(s)`
+      );
     } catch (error) {
       logger.error(`Failed to read directory ${directoryPath}: ${error}`);
       throw error;
@@ -64,9 +69,12 @@ export class PromptLoader {
    * @returns Parsed and validated prompt
    * @throws {PromptParseError | PromptValidationError} If parsing or validation fails
    */
-  static async loadPromptFile(filePath: string, source: 'pre-shipped' | 'custom' = 'custom'): Promise<Prompt> {
+  static async loadPromptFile(
+    filePath: string,
+    source: "pre-shipped" | "custom" = "custom"
+  ): Promise<Prompt> {
     // Read file contents
-    const content = await fs.readFile(filePath, 'utf-8');
+    const content = await fs.readFile(filePath, "utf-8");
 
     // Parse the prompt
     const parseResult = parsePromptFile(filePath, content, source);
@@ -90,11 +98,13 @@ export class PromptLoader {
    * @param directoryPath - Path to the directory to scan
    * @returns Array of absolute file paths
    */
-  private static async findPromptFiles(directoryPath: string): Promise<string[]> {
+  private static async findPromptFiles(
+    directoryPath: string
+  ): Promise<string[]> {
     const entries = await fs.readdir(directoryPath, { withFileTypes: true });
 
     const promptFiles = entries
-      .filter((entry) => entry.isFile() && entry.name.endsWith('.md'))
+      .filter((entry) => entry.isFile() && entry.name.endsWith(".md"))
       .map((entry) => path.join(directoryPath, entry.name));
 
     return promptFiles;

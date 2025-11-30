@@ -2,14 +2,14 @@
  * Factory for creating and configuring MCP server instances
  */
 
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import type { ServerConfig } from '../config/types.js';
-import type { PromptManager } from '../prompts/prompt-manager.js';
-import { createLogger } from '../utils/logger.js';
-import { z } from 'zod';
-import Handlebars from 'handlebars';
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import type { ServerConfig } from "../config/types.js";
+import type { PromptManager } from "../prompts/prompt-manager.js";
+import { createLogger } from "../utils/logger.js";
+import { z } from "zod";
+import Handlebars from "handlebars";
 
-const logger = createLogger('ServerFactory');
+const logger = createLogger("ServerFactory");
 
 /**
  * Creates and configures an MCP server instance with prompt capabilities
@@ -24,25 +24,25 @@ export class ServerFactory {
    */
   static createServer(
     config: ServerConfig,
-    promptManager: PromptManager,
+    promptManager: PromptManager
   ): McpServer {
-    logger.info('Creating MCP server', {
+    logger.info("Creating MCP server", {
       serverName: config.serverName,
-      version: config.serverVersion,
+      version: config.serverVersion
     });
 
     // Create server instance
     const server = new McpServer(
       {
         name: config.serverName,
-        version: config.serverVersion,
+        version: config.serverVersion
       },
       {
         capabilities: {
           prompts: {},
-          tools: {},
-        },
-      },
+          tools: {}
+        }
+      }
     );
 
     // Register all prompts from the manager
@@ -51,8 +51,8 @@ export class ServerFactory {
     // Register tools
     ServerFactory.registerTools(server, promptManager);
 
-    logger.info('MCP server created successfully', {
-      promptCount: promptManager.listPrompts().length,
+    logger.info("MCP server created successfully", {
+      promptCount: promptManager.listPrompts().length
     });
 
     return server;
@@ -63,46 +63,51 @@ export class ServerFactory {
    */
   private static registerTools(
     server: McpServer,
-    promptManager: PromptManager,
+    promptManager: PromptManager
   ): void {
     // Register list_prompts tool
     server.registerTool(
-      'list_prompts',
+      "list_prompts",
       {
-        description: 'List all available prompts with their metadata',
+        description: "List all available prompts with their metadata"
       },
       async () => {
         const prompts = promptManager.listPrompts();
-        
+
         // Build structured result
-        const promptList = prompts.map(prompt => ({
+        const promptList = prompts.map((prompt) => ({
           name: prompt.name,
           description: prompt.description,
           tags: prompt.tags,
-          arguments: prompt.arguments?.map(arg => ({
-            name: arg.name,
-            description: arg.description,
-            required: arg.required ?? false,
-          })) ?? [],
-          source: prompt.metadata.source,
+          arguments:
+            prompt.arguments?.map((arg) => ({
+              name: arg.name,
+              description: arg.description,
+              required: arg.required ?? false
+            })) ?? [],
+          source: prompt.metadata.source
         }));
 
         return {
           content: [
             {
-              type: 'text' as const,
-              text: JSON.stringify({
-                prompts: promptList,
-                total: prompts.length,
-              }, null, 2),
-            },
-          ],
+              type: "text" as const,
+              text: JSON.stringify(
+                {
+                  prompts: promptList,
+                  total: prompts.length
+                },
+                null,
+                2
+              )
+            }
+          ]
         };
-      },
+      }
     );
 
-    logger.info('Tools registered successfully', {
-      toolCount: 1,
+    logger.info("Tools registered successfully", {
+      toolCount: 1
     });
   }
 
@@ -111,7 +116,7 @@ export class ServerFactory {
    */
   private static registerPrompts(
     server: McpServer,
-    promptManager: PromptManager,
+    promptManager: PromptManager
   ): void {
     const prompts = promptManager.listPrompts();
 
@@ -134,61 +139,66 @@ export class ServerFactory {
             prompt.name,
             {
               description: prompt.description,
-              argsSchema,
+              argsSchema
             },
             async (args) => {
               // Compile and render the template with provided arguments
               // Use noEscape: true to prevent HTML escaping in code snippets
-              const template = Handlebars.compile(prompt.content, { noEscape: true });
+              const template = Handlebars.compile(prompt.content, {
+                noEscape: true
+              });
               const renderedContent = template(args);
-              
+
               return {
                 messages: [
                   {
-                    role: 'user',
+                    role: "user",
                     content: {
-                      type: 'text',
-                      text: renderedContent,
-                    },
-                  },
-                ],
+                      type: "text",
+                      text: renderedContent
+                    }
+                  }
+                ]
               };
-            },
+            }
           );
         } else {
           // Prompt without arguments
           server.registerPrompt(
             prompt.name,
             {
-              description: prompt.description,
+              description: prompt.description
             },
             async () => {
               return {
                 messages: [
                   {
-                    role: 'user',
+                    role: "user",
                     content: {
-                      type: 'text',
-                      text: prompt.content,
-                    },
-                  },
-                ],
+                      type: "text",
+                      text: prompt.content
+                    }
+                  }
+                ]
               };
-            },
+            }
           );
         }
 
-        logger.info('Registered prompt', {
+        logger.info("Registered prompt", {
           name: prompt.name,
-          argumentCount: prompt.arguments?.length || 0,
+          argumentCount: prompt.arguments?.length || 0
         });
       } catch (error) {
-        logger.error('Failed to register prompt', error instanceof Error ? error : undefined);
+        logger.error(
+          "Failed to register prompt",
+          error instanceof Error ? error : undefined
+        );
       }
     }
 
-    logger.info('All prompts registered', {
-      totalPrompts: prompts.length,
+    logger.info("All prompts registered", {
+      totalPrompts: prompts.length
     });
   }
 }

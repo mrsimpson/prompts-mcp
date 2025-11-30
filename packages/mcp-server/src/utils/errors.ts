@@ -8,7 +8,7 @@
 export class MCPPromptsError extends Error {
   constructor(message: string) {
     super(message);
-    this.name = 'MCPPromptsError';
+    this.name = "MCPPromptsError";
     Error.captureStackTrace(this, this.constructor);
   }
 }
@@ -20,10 +20,10 @@ export class PromptParseError extends MCPPromptsError {
   constructor(
     message: string,
     public readonly filePath: string,
-    public readonly details?: string,
+    public readonly details?: string
   ) {
     super(message);
-    this.name = 'PromptParseError';
+    this.name = "PromptParseError";
   }
 }
 
@@ -34,10 +34,10 @@ export class PromptValidationError extends MCPPromptsError {
   constructor(
     message: string,
     public readonly filePath: string,
-    public readonly errors: string[],
+    public readonly errors: string[]
   ) {
     super(message);
-    this.name = 'PromptValidationError';
+    this.name = "PromptValidationError";
   }
 }
 
@@ -47,10 +47,10 @@ export class PromptValidationError extends MCPPromptsError {
 export class ConfigurationError extends MCPPromptsError {
   constructor(
     message: string,
-    public readonly details?: string,
+    public readonly details?: string
   ) {
     super(message);
-    this.name = 'ConfigurationError';
+    this.name = "ConfigurationError";
   }
 }
 
@@ -60,6 +60,6 @@ export class ConfigurationError extends MCPPromptsError {
 export class PromptNotFoundError extends MCPPromptsError {
   constructor(public readonly promptName: string) {
     super(`Prompt not found: ${promptName}`);
-    this.name = 'PromptNotFoundError';
+    this.name = "PromptNotFoundError";
   }
 }
