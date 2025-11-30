@@ -3,23 +3,36 @@ import { PromptValidator } from "../../src/prompts/prompt-validator.js";
 import { PromptValidationError } from "../../src/utils/errors.js";
 import type { Prompt } from "../../src/prompts/types.js";
 
+// Helper function to create test prompts with required fields
+function createTestPrompt(overrides: Partial<Prompt> = {}): Prompt {
+  return {
+    name: "test-prompt",
+    description: "A test prompt",
+    content: "Test content",
+    tags: [],
+    metadata: {
+      filePath: "test.md",
+      source: "custom" as const,
+      loadedAt: new Date()
+    },
+    ...overrides
+  };
+}
+
 describe("PromptValidator", () => {
   describe("validate()", () => {
     it("should validate a valid minimal prompt", () => {
-      const prompt: Prompt = {
+      const prompt = createTestPrompt({
         name: "test-prompt",
         description: "A test prompt",
         content: "Test content"
-      };
+      });
 
       expect(() => PromptValidator.validate(prompt, "test.md")).not.toThrow();
     });
 
     it("should validate a valid prompt with all fields", () => {
-      const prompt: Prompt = {
-        name: "test-prompt",
-        description: "A test prompt",
-        content: "Test content",
+      const prompt = createTestPrompt({
         tags: ["testing", "example"],
         arguments: [
           {
@@ -28,17 +41,17 @@ describe("PromptValidator", () => {
             required: true
           }
         ]
-      };
+      });
 
       expect(() => PromptValidator.validate(prompt, "test.md")).not.toThrow();
     });
 
     it("should throw PromptValidationError for invalid prompt", () => {
-      const prompt: Prompt = {
+      const prompt = createTestPrompt({
         name: "",
         description: "",
         content: "Test content"
-      };
+      });
 
       expect(() => PromptValidator.validate(prompt, "test.md")).toThrow(
         PromptValidationError
@@ -46,11 +59,11 @@ describe("PromptValidator", () => {
     });
 
     it("should include file path and errors in validation error", () => {
-      const prompt: Prompt = {
+      const prompt = createTestPrompt({
         name: "",
         description: "",
         content: "Test content"
-      };
+      });
 
       try {
         PromptValidator.validate(prompt, "test.md");
@@ -71,11 +84,11 @@ describe("PromptValidator", () => {
 
   describe("validatePrompt()", () => {
     it("should return valid result for valid prompt", () => {
-      const prompt: Prompt = {
+      const prompt = createTestPrompt({
         name: "test-prompt",
         description: "A test prompt",
         content: "Test content"
-      };
+      });
 
       const result = PromptValidator.validatePrompt(prompt);
       expect(result.valid).toBe(true);
@@ -83,11 +96,11 @@ describe("PromptValidator", () => {
     });
 
     it("should return invalid result with errors for invalid prompt", () => {
-      const prompt: Prompt = {
+      const prompt = createTestPrompt({
         name: "",
         description: "",
         content: "Test content"
-      };
+      });
 
       const result = PromptValidator.validatePrompt(prompt);
       expect(result.valid).toBe(false);
@@ -97,21 +110,21 @@ describe("PromptValidator", () => {
 
   describe("isValid()", () => {
     it("should return true for valid prompt", () => {
-      const prompt: Prompt = {
+      const prompt = createTestPrompt({
         name: "test-prompt",
         description: "A test prompt",
         content: "Test content"
-      };
+      });
 
       expect(PromptValidator.isValid(prompt)).toBe(true);
     });
 
     it("should return false for invalid prompt", () => {
-      const prompt: Prompt = {
+      const prompt = createTestPrompt({
         name: "",
         description: "",
         content: "Test content"
-      };
+      });
 
       expect(PromptValidator.isValid(prompt)).toBe(false);
     });
@@ -119,11 +132,11 @@ describe("PromptValidator", () => {
 
   describe("name validation", () => {
     it("should reject missing name", () => {
-      const prompt: Prompt = {
+      const prompt = createTestPrompt({
         name: "",
         description: "A test prompt",
         content: "Test content"
-      };
+      });
 
       const result = PromptValidator.validatePrompt(prompt);
       expect(result.valid).toBe(false);
@@ -133,11 +146,11 @@ describe("PromptValidator", () => {
     });
 
     it("should reject whitespace-only name", () => {
-      const prompt: Prompt = {
+      const prompt = createTestPrompt({
         name: "   ",
         description: "A test prompt",
         content: "Test content"
-      };
+      });
 
       const result = PromptValidator.validatePrompt(prompt);
       expect(result.valid).toBe(false);
@@ -147,11 +160,11 @@ describe("PromptValidator", () => {
     });
 
     it("should reject name with invalid characters", () => {
-      const prompt: Prompt = {
+      const prompt = createTestPrompt({
         name: "test prompt!",
         description: "A test prompt",
         content: "Test content"
-      };
+      });
 
       const result = PromptValidator.validatePrompt(prompt);
       expect(result.valid).toBe(false);
@@ -161,22 +174,22 @@ describe("PromptValidator", () => {
     });
 
     it("should accept name with hyphens and underscores", () => {
-      const prompt: Prompt = {
+      const prompt = createTestPrompt({
         name: "test-prompt_123",
         description: "A test prompt",
         content: "Test content"
-      };
+      });
 
       const result = PromptValidator.validatePrompt(prompt);
       expect(result.valid).toBe(true);
     });
 
     it("should reject name longer than 100 characters", () => {
-      const prompt: Prompt = {
+      const prompt = createTestPrompt({
         name: "a".repeat(101),
         description: "A test prompt",
         content: "Test content"
-      };
+      });
 
       const result = PromptValidator.validatePrompt(prompt);
       expect(result.valid).toBe(false);
@@ -186,11 +199,11 @@ describe("PromptValidator", () => {
     });
 
     it("should accept name with exactly 100 characters", () => {
-      const prompt: Prompt = {
+      const prompt = createTestPrompt({
         name: "a".repeat(100),
         description: "A test prompt",
         content: "Test content"
-      };
+      });
 
       const result = PromptValidator.validatePrompt(prompt);
       expect(result.valid).toBe(true);
@@ -199,11 +212,11 @@ describe("PromptValidator", () => {
 
   describe("description validation", () => {
     it("should reject missing description", () => {
-      const prompt: Prompt = {
+      const prompt = createTestPrompt({
         name: "test-prompt",
         description: "",
         content: "Test content"
-      };
+      });
 
       const result = PromptValidator.validatePrompt(prompt);
       expect(result.valid).toBe(false);
@@ -213,11 +226,11 @@ describe("PromptValidator", () => {
     });
 
     it("should reject whitespace-only description", () => {
-      const prompt: Prompt = {
+      const prompt = createTestPrompt({
         name: "test-prompt",
         description: "   ",
         content: "Test content"
-      };
+      });
 
       const result = PromptValidator.validatePrompt(prompt);
       expect(result.valid).toBe(false);
@@ -227,11 +240,11 @@ describe("PromptValidator", () => {
     });
 
     it("should reject description longer than 500 characters", () => {
-      const prompt: Prompt = {
+      const prompt = createTestPrompt({
         name: "test-prompt",
         description: "a".repeat(501),
         content: "Test content"
-      };
+      });
 
       const result = PromptValidator.validatePrompt(prompt);
       expect(result.valid).toBe(false);
@@ -241,22 +254,22 @@ describe("PromptValidator", () => {
     });
 
     it("should accept description with exactly 500 characters", () => {
-      const prompt: Prompt = {
+      const prompt = createTestPrompt({
         name: "test-prompt",
         description: "a".repeat(500),
         content: "Test content"
-      };
+      });
 
       const result = PromptValidator.validatePrompt(prompt);
       expect(result.valid).toBe(true);
     });
 
     it("should accept multi-line description", () => {
-      const prompt: Prompt = {
+      const prompt = createTestPrompt({
         name: "test-prompt",
         description: "Line 1\nLine 2\nLine 3",
         content: "Test content"
-      };
+      });
 
       const result = PromptValidator.validatePrompt(prompt);
       expect(result.valid).toBe(true);
@@ -265,35 +278,35 @@ describe("PromptValidator", () => {
 
   describe("tags validation", () => {
     it("should accept undefined tags", () => {
-      const prompt: Prompt = {
+      const prompt = createTestPrompt({
         name: "test-prompt",
         description: "A test prompt",
         content: "Test content"
-      };
+      });
 
       const result = PromptValidator.validatePrompt(prompt);
       expect(result.valid).toBe(true);
     });
 
     it("should accept empty tags array", () => {
-      const prompt: Prompt = {
+      const prompt = createTestPrompt({
         name: "test-prompt",
         description: "A test prompt",
         content: "Test content",
         tags: []
-      };
+      });
 
       const result = PromptValidator.validatePrompt(prompt);
       expect(result.valid).toBe(true);
     });
 
     it("should accept valid tags", () => {
-      const prompt: Prompt = {
+      const prompt = createTestPrompt({
         name: "test-prompt",
         description: "A test prompt",
         content: "Test content",
         tags: ["testing", "example", "demo"]
-      };
+      });
 
       const result = PromptValidator.validatePrompt(prompt);
       expect(result.valid).toBe(true);
@@ -326,12 +339,12 @@ describe("PromptValidator", () => {
     });
 
     it("should reject empty string tags", () => {
-      const prompt: Prompt = {
+      const prompt = createTestPrompt({
         name: "test-prompt",
         description: "A test prompt",
         content: "Test content",
         tags: ["valid", "", "also-valid"]
-      };
+      });
 
       const result = PromptValidator.validatePrompt(prompt);
       expect(result.valid).toBe(false);
@@ -341,12 +354,12 @@ describe("PromptValidator", () => {
     });
 
     it("should reject whitespace-only tags", () => {
-      const prompt: Prompt = {
+      const prompt = createTestPrompt({
         name: "test-prompt",
         description: "A test prompt",
         content: "Test content",
         tags: ["valid", "   ", "also-valid"]
-      };
+      });
 
       const result = PromptValidator.validatePrompt(prompt);
       expect(result.valid).toBe(false);
@@ -356,12 +369,12 @@ describe("PromptValidator", () => {
     });
 
     it("should reject tags longer than 50 characters", () => {
-      const prompt: Prompt = {
+      const prompt = createTestPrompt({
         name: "test-prompt",
         description: "A test prompt",
         content: "Test content",
         tags: ["valid", "a".repeat(51)]
-      };
+      });
 
       const result = PromptValidator.validatePrompt(prompt);
       expect(result.valid).toBe(false);
@@ -371,12 +384,12 @@ describe("PromptValidator", () => {
     });
 
     it("should reject duplicate tags", () => {
-      const prompt: Prompt = {
+      const prompt = createTestPrompt({
         name: "test-prompt",
         description: "A test prompt",
         content: "Test content",
         tags: ["testing", "example", "testing"]
-      };
+      });
 
       const result = PromptValidator.validatePrompt(prompt);
       expect(result.valid).toBe(false);
@@ -386,33 +399,30 @@ describe("PromptValidator", () => {
 
   describe("arguments validation", () => {
     it("should accept undefined arguments", () => {
-      const prompt: Prompt = {
+      const prompt = createTestPrompt({
         name: "test-prompt",
         description: "A test prompt",
         content: "Test content"
-      };
+      });
 
       const result = PromptValidator.validatePrompt(prompt);
       expect(result.valid).toBe(true);
     });
 
     it("should accept empty arguments array", () => {
-      const prompt: Prompt = {
+      const prompt = createTestPrompt({
         name: "test-prompt",
         description: "A test prompt",
         content: "Test content",
         arguments: []
-      };
+      });
 
       const result = PromptValidator.validatePrompt(prompt);
       expect(result.valid).toBe(true);
     });
 
     it("should accept valid arguments", () => {
-      const prompt: Prompt = {
-        name: "test-prompt",
-        description: "A test prompt",
-        content: "Test content",
+      const prompt = createTestPrompt({
         arguments: [
           {
             name: "arg1",
@@ -425,7 +435,7 @@ describe("PromptValidator", () => {
             required: false
           }
         ]
-      };
+      });
 
       const result = PromptValidator.validatePrompt(prompt);
       expect(result.valid).toBe(true);
@@ -445,10 +455,7 @@ describe("PromptValidator", () => {
     });
 
     it("should reject duplicate argument names", () => {
-      const prompt: Prompt = {
-        name: "test-prompt",
-        description: "A test prompt",
-        content: "Test content",
+      const prompt = createTestPrompt({
         arguments: [
           {
             name: "arg1",
@@ -459,7 +466,7 @@ describe("PromptValidator", () => {
             description: "Duplicate argument"
           }
         ]
-      };
+      });
 
       const result = PromptValidator.validatePrompt(prompt);
       expect(result.valid).toBe(false);
@@ -486,17 +493,14 @@ describe("PromptValidator", () => {
     });
 
     it("should reject argument with empty name", () => {
-      const prompt: Prompt = {
-        name: "test-prompt",
-        description: "A test prompt",
-        content: "Test content",
+      const prompt = createTestPrompt({
         arguments: [
           {
             name: "",
             description: "Argument with empty name"
           }
         ]
-      };
+      });
 
       const result = PromptValidator.validatePrompt(prompt);
       expect(result.valid).toBe(false);
@@ -506,17 +510,14 @@ describe("PromptValidator", () => {
     });
 
     it("should reject argument with name longer than 50 characters", () => {
-      const prompt: Prompt = {
-        name: "test-prompt",
-        description: "A test prompt",
-        content: "Test content",
+      const prompt = createTestPrompt({
         arguments: [
           {
             name: "a".repeat(51),
             description: "Argument with long name"
           }
         ]
-      };
+      });
 
       const result = PromptValidator.validatePrompt(prompt);
       expect(result.valid).toBe(false);
@@ -547,17 +548,14 @@ describe("PromptValidator", () => {
     });
 
     it("should reject argument with empty description", () => {
-      const prompt: Prompt = {
-        name: "test-prompt",
-        description: "A test prompt",
-        content: "Test content",
+      const prompt = createTestPrompt({
         arguments: [
           {
             name: "arg1",
             description: ""
           }
         ]
-      };
+      });
 
       const result = PromptValidator.validatePrompt(prompt);
       expect(result.valid).toBe(false);
@@ -567,17 +565,14 @@ describe("PromptValidator", () => {
     });
 
     it("should reject argument with description longer than 200 characters", () => {
-      const prompt: Prompt = {
-        name: "test-prompt",
-        description: "A test prompt",
-        content: "Test content",
+      const prompt = createTestPrompt({
         arguments: [
           {
             name: "arg1",
             description: "a".repeat(201)
           }
         ]
-      };
+      });
 
       const result = PromptValidator.validatePrompt(prompt);
       expect(result.valid).toBe(false);
@@ -608,17 +603,14 @@ describe("PromptValidator", () => {
     });
 
     it("should accept argument without required field (defaults to false)", () => {
-      const prompt: Prompt = {
-        name: "test-prompt",
-        description: "A test prompt",
-        content: "Test content",
+      const prompt = createTestPrompt({
         arguments: [
           {
             name: "arg1",
             description: "First argument"
           }
         ]
-      };
+      });
 
       const result = PromptValidator.validatePrompt(prompt);
       expect(result.valid).toBe(true);
@@ -627,10 +619,9 @@ describe("PromptValidator", () => {
 
   describe("edge cases", () => {
     it("should handle multiple validation errors at once", () => {
-      const prompt: Prompt = {
+      const prompt = createTestPrompt({
         name: "",
         description: "",
-        content: "Test content",
         tags: ["", "valid"],
         arguments: [
           {
@@ -638,7 +629,7 @@ describe("PromptValidator", () => {
             description: ""
           }
         ]
-      };
+      });
 
       const result = PromptValidator.validatePrompt(prompt);
       expect(result.valid).toBe(false);
@@ -656,11 +647,11 @@ describe("PromptValidator", () => {
       ];
 
       for (const testCase of testCases) {
-        const prompt: Prompt = {
+        const prompt = createTestPrompt({
           name: testCase.name,
           description: "A test prompt",
           content: "Test content"
-        };
+        });
 
         const result = PromptValidator.validatePrompt(prompt);
         expect(result.valid).toBe(testCase.valid);
@@ -668,11 +659,11 @@ describe("PromptValidator", () => {
     });
 
     it("should handle Unicode characters in description", () => {
-      const prompt: Prompt = {
+      const prompt = createTestPrompt({
         name: "test-prompt",
         description: "Test prompt with émojis 🎉 and üñíçödé",
         content: "Test content"
-      };
+      });
 
       const result = PromptValidator.validatePrompt(prompt);
       expect(result.valid).toBe(true);

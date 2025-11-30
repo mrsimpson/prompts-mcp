@@ -31,7 +31,6 @@ export default [
       "**/dist/**",
       ".pnpm-store/**",
       "pnpm-lock.yaml",
-      "/packages/**",
       "docs/.vitepress/cache/**"
     ]
   }
