@@ -2,14 +2,14 @@
  * Integration tests for HTTP transport
  */
 
-import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
-import { HttpTransport } from '../../src/transports/http.js';
-import { ServerFactory } from '../../src/server/server-factory.js';
-import { PromptManager } from '../../src/prompts/prompt-manager.js';
-import { createLogger } from '../../src/utils/logger.js';
-import type { ServerConfig } from '../../src/config/types.js';
+import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
+import { HttpTransport } from "../../src/transports/http.js";
+import { ServerFactory } from "../../src/server/server-factory.js";
+import { PromptManager } from "../../src/prompts/prompt-manager.js";
+import { createLogger } from "../../src/utils/logger.js";
+import type { ServerConfig } from "../../src/config/types.js";
 
-describe('HttpTransport', () => {
+describe("HttpTransport", () => {
   let transport: HttpTransport;
   let promptManager: PromptManager;
   let config: ServerConfig;
@@ -18,16 +18,16 @@ describe('HttpTransport', () => {
     // Create fresh instances for each test
     promptManager = new PromptManager();
     config = {
-      serverName: 'test-server',
-      serverVersion: '1.0.0',
+      serverName: "test-server",
+      serverVersion: "1.0.0",
       httpPort: 3000,
-      logLevel: 'error', // Suppress logs during tests
+      logLevel: "error", // Suppress logs during tests
       enableStdio: false,
-      enableHttp: true,
+      enableHttp: true
     };
 
     // Mock process.stderr.write to prevent log output during tests
-    vi.spyOn(process.stderr, 'write').mockImplementation(() => true);
+    vi.spyOn(process.stderr, "write").mockImplementation(() => true);
   });
 
   afterEach(async () => {
@@ -38,49 +38,49 @@ describe('HttpTransport', () => {
     vi.restoreAllMocks();
   });
 
-  describe('constructor', () => {
-    it('should create transport with default options', () => {
+  describe("constructor", () => {
+    it("should create transport with default options", () => {
       transport = new HttpTransport({ port: 3001 });
       expect(transport).toBeDefined();
       expect(transport.isRunning()).toBe(false);
       expect(transport.getPort()).toBe(3001);
     });
 
-    it('should create transport with custom logger', () => {
-      const logger = createLogger('CustomLogger');
+    it("should create transport with custom logger", () => {
+      const logger = createLogger("CustomLogger");
       transport = new HttpTransport({ port: 3002, logger });
       expect(transport).toBeDefined();
     });
 
-    it('should create transport with debug enabled', () => {
+    it("should create transport with debug enabled", () => {
       transport = new HttpTransport({ port: 3003, debug: true });
       expect(transport).toBeDefined();
     });
 
-    it('should create transport with sessions disabled', () => {
+    it("should create transport with sessions disabled", () => {
       transport = new HttpTransport({ port: 3004, enableSessions: false });
       expect(transport).toBeDefined();
     });
 
-    it('should create transport with JSON responses enabled', () => {
+    it("should create transport with JSON responses enabled", () => {
       transport = new HttpTransport({ port: 3005, enableJsonResponse: true });
       expect(transport).toBeDefined();
     });
   });
 
-  describe('start and stop', () => {
-    it('should start transport with server', async () => {
+  describe("start and stop", () => {
+    it("should start transport with server", async () => {
       // Add a test prompt
       promptManager.register({
-        name: 'test-prompt',
-        description: 'Test prompt',
-        content: 'Test content',
+        name: "test-prompt",
+        description: "Test prompt",
+        content: "Test content",
         tags: [],
         metadata: {
-          source: 'custom',
-          filePath: '/test/test-prompt.md',
-          loadedAt: new Date(),
-        },
+          source: "custom",
+          filePath: "/test/test-prompt.md",
+          loadedAt: new Date()
+        }
       });
 
       // Create server
@@ -96,18 +96,18 @@ describe('HttpTransport', () => {
       expect(transport.getPort()).toBe(3010);
     });
 
-    it('should stop transport gracefully', async () => {
+    it("should stop transport gracefully", async () => {
       // Add a test prompt
       promptManager.register({
-        name: 'test-prompt',
-        description: 'Test prompt',
-        content: 'Test content',
+        name: "test-prompt",
+        description: "Test prompt",
+        content: "Test content",
         tags: [],
         metadata: {
-          source: 'custom',
-          filePath: '/test/test-prompt.md',
-          loadedAt: new Date(),
-        },
+          source: "custom",
+          filePath: "/test/test-prompt.md",
+          loadedAt: new Date()
+        }
       });
 
       // Create server
@@ -123,26 +123,26 @@ describe('HttpTransport', () => {
       expect(transport.isRunning()).toBe(false);
     });
 
-    it('should handle stop when not running', async () => {
+    it("should handle stop when not running", async () => {
       transport = new HttpTransport({ port: 3012 });
-      
+
       // Should not throw when stopping before starting
       await expect(transport.stop()).resolves.toBeUndefined();
       expect(transport.isRunning()).toBe(false);
     });
 
-    it('should handle multiple stop calls', async () => {
+    it("should handle multiple stop calls", async () => {
       // Add a test prompt
       promptManager.register({
-        name: 'test-prompt',
-        description: 'Test prompt',
-        content: 'Test content',
+        name: "test-prompt",
+        description: "Test prompt",
+        content: "Test content",
         tags: [],
         metadata: {
-          source: 'custom',
-          filePath: '/test/test-prompt.md',
-          loadedAt: new Date(),
-        },
+          source: "custom",
+          filePath: "/test/test-prompt.md",
+          loadedAt: new Date()
+        }
       });
 
       // Create server
@@ -159,19 +159,19 @@ describe('HttpTransport', () => {
     });
   });
 
-  describe('health check endpoint', () => {
-    it('should respond to health check requests', async () => {
+  describe("health check endpoint", () => {
+    it("should respond to health check requests", async () => {
       // Add a test prompt
       promptManager.register({
-        name: 'test-prompt',
-        description: 'Test prompt',
-        content: 'Test content',
+        name: "test-prompt",
+        description: "Test prompt",
+        content: "Test content",
         tags: [],
         metadata: {
-          source: 'custom',
-          filePath: '/test/test-prompt.md',
-          loadedAt: new Date(),
-        },
+          source: "custom",
+          filePath: "/test/test-prompt.md",
+          loadedAt: new Date()
+        }
       });
 
       // Create server
@@ -182,33 +182,36 @@ describe('HttpTransport', () => {
       await transport.start(server);
 
       // Make health check request
-      const response = await fetch('http://localhost:3014/health');
+      const response = await fetch("http://localhost:3014/health");
       expect(response.status).toBe(200);
 
-      const data = (await response.json()) as { status: string; transport: string };
-      expect(data.status).toBe('ok');
-      expect(data.transport).toBe('http');
+      const data = (await response.json()) as {
+        status: string;
+        transport: string;
+      };
+      expect(data.status).toBe("ok");
+      expect(data.transport).toBe("http");
     });
   });
 
-  describe('isRunning', () => {
-    it('should return false before starting', () => {
+  describe("isRunning", () => {
+    it("should return false before starting", () => {
       transport = new HttpTransport({ port: 3015 });
       expect(transport.isRunning()).toBe(false);
     });
 
-    it('should return true after starting', async () => {
+    it("should return true after starting", async () => {
       // Add a test prompt
       promptManager.register({
-        name: 'test-prompt',
-        description: 'Test prompt',
-        content: 'Test content',
+        name: "test-prompt",
+        description: "Test prompt",
+        content: "Test content",
         tags: [],
         metadata: {
-          source: 'custom',
-          filePath: '/test/test-prompt.md',
-          loadedAt: new Date(),
-        },
+          source: "custom",
+          filePath: "/test/test-prompt.md",
+          loadedAt: new Date()
+        }
       });
 
       // Create server
@@ -220,18 +223,18 @@ describe('HttpTransport', () => {
       expect(transport.isRunning()).toBe(true);
     });
 
-    it('should return false after stopping', async () => {
+    it("should return false after stopping", async () => {
       // Add a test prompt
       promptManager.register({
-        name: 'test-prompt',
-        description: 'Test prompt',
-        content: 'Test content',
+        name: "test-prompt",
+        description: "Test prompt",
+        content: "Test content",
         tags: [],
         metadata: {
-          source: 'custom',
-          filePath: '/test/test-prompt.md',
-          loadedAt: new Date(),
-        },
+          source: "custom",
+          filePath: "/test/test-prompt.md",
+          loadedAt: new Date()
+        }
       });
 
       // Create server
@@ -245,8 +248,8 @@ describe('HttpTransport', () => {
     });
   });
 
-  describe('getPort', () => {
-    it('should return configured port', () => {
+  describe("getPort", () => {
+    it("should return configured port", () => {
       transport = new HttpTransport({ port: 3018 });
       expect(transport.getPort()).toBe(3018);
     });

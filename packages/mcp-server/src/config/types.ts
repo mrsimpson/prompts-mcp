@@ -3,10 +3,10 @@
  */
 
 /** Log level */
-export type LogLevel = 'error' | 'warn' | 'info' | 'debug';
+export type LogLevel = "error" | "warn" | "info" | "debug";
 
 /** Transport type */
-export type TransportType = 'stdio' | 'http';
+export type TransportType = "stdio" | "http";
 
 /**
  * Server configuration
