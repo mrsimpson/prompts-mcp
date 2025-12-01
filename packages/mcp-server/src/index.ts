@@ -3,7 +3,7 @@
  *
  * This module orchestrates:
  * - Configuration loading
- * - Prompt loading (pre-shipped + custom)
+ * - Prompt loading (pre-shipped + user)
  * - Server initialization
  * - Transport setup (stdio and/or HTTP)
  */
@@ -18,6 +18,8 @@ import { ServerFactory } from "./server/server-factory.js";
 import { StdioTransport } from "./transports/stdio.js";
 import { HttpTransport } from "./transports/http.js";
 import { createLogger } from "./utils/logger.js";
+import { discoverDirectory } from "./utils/directory-discovery.js";
+import { USER_PROMPTS_SUBDIR } from "./constants.js";
 
 const logger = createLogger("Main");
 
@@ -69,27 +71,41 @@ export async function startServer(): Promise<void> {
       );
     }
 
-    // Load custom prompts if configured
-    if (config.customPromptsDir) {
-      logger.info(`Loading custom prompts from: ${config.customPromptsDir}`);
+    // Load user prompts using directory discovery
+    const userPromptsDiscovery = discoverDirectory({
+      subdirEnvPrefix: "PROMPTS",
+      subdir: USER_PROMPTS_SUBDIR,
+      useHomeFallback: true
+    });
 
-      const customResult = await PromptLoader.loadFromDirectory(
-        config.customPromptsDir
+    logger.info(
+      `User prompts directory: ${userPromptsDiscovery.path} (source: ${userPromptsDiscovery.source})`
+    );
+
+    if (userPromptsDiscovery.exists) {
+      logger.info(`Loading user prompts from: ${userPromptsDiscovery.path}`);
+
+      const userPromptsResult = await PromptLoader.loadFromDirectory(
+        userPromptsDiscovery.path
       );
 
-      // Mark all custom prompts as such
-      customResult.prompts.forEach((prompt) => {
+      // Mark all user prompts as custom source
+      userPromptsResult.prompts.forEach((prompt) => {
         prompt.metadata.source = "custom";
       });
 
-      promptManager.registerMany(customResult.prompts);
+      promptManager.registerMany(userPromptsResult.prompts);
 
-      logger.info(`Loaded ${customResult.prompts.length} custom prompt(s)`);
-      if (customResult.errors.length > 0) {
+      logger.info(`Loaded ${userPromptsResult.prompts.length} user prompt(s)`);
+      if (userPromptsResult.errors.length > 0) {
         logger.warn(
-          `Failed to load ${customResult.errors.length} custom prompt(s)`
+          `Failed to load ${userPromptsResult.errors.length} user prompt(s)`
         );
       }
+    } else {
+      logger.info(
+        `No user prompts directory found at ${userPromptsDiscovery.path} (${userPromptsDiscovery.source}). This is normal if you don't have user prompts yet.`
+      );
     }
 
     // Log total prompts available

@@ -67,18 +67,27 @@ This runs both stdio and HTTP simultaneously!
 
 ## 🔧 Environment Variables
 
-| Variable             | Default | Options                          |
-| -------------------- | ------- | -------------------------------- |
-| `ENABLE_STDIO`       | `true`  | `true` or `false`                |
-| `ENABLE_HTTP`        | `false` | `true` or `false`                |
-| `HTTP_PORT`          | `3000`  | Any available port               |
-| `LOG_LEVEL`          | `info`  | `error`, `warn`, `info`, `debug` |
-| `CUSTOM_PROMPTS_DIR` | -       | Path to your prompt directory    |
+| Variable       | Default | Options                          |
+| -------------- | ------- | -------------------------------- |
+| `ENABLE_STDIO` | `true`  | `true` or `false`                |
+| `ENABLE_HTTP`  | `false` | `true` or `false`                |
+| `HTTP_PORT`    | `3000`  | Any available port               |
+| `LOG_LEVEL`    | `info`  | `error`, `warn`, `info`, `debug` |
 
-**Example with custom prompts:**
+**Example with debug logging:**
 
 ```bash
-CUSTOM_PROMPTS_DIR=/path/to/your/prompts LOG_LEVEL=debug node dist/bin.js
+LOG_LEVEL=debug node dist/bin.js
+```
+
+### Adding User Prompts
+
+Create a `.prompt-mcp/prompts` directory in your working directory:
+
+```bash
+mkdir -p .prompt-mcp/prompts
+# Add your .md prompt files to this directory
+node dist/bin.js
 ```
 
 ---
@@ -151,61 +160,37 @@ npm run typecheck
 
 ## 📝 Available Prompts
 
-All prompts are in: `resources/prompts/`
+### Pre-shipped Prompt
 
-### 1. code-review.md
+The server includes one pre-shipped prompt in: `resources/prompts/`
 
-Review code with detailed feedback on quality, bugs, and best practices.
+#### create-prompt.md
 
-**Arguments:**
-
-- `code` (required) - Code to review
-- `language` (optional) - Programming language
-- `context` (optional) - Additional context
-
-### 2. documentation.md
-
-Generate comprehensive API documentation.
+A comprehensive guide to creating well-structured MCP prompt files.
 
 **Arguments:**
 
-- `code` (required) - Code to document
-- `format` (optional) - Documentation format
-- `audience` (optional) - Target audience
-- `includeExamples` (optional) - Include examples
+- `purpose` (required) - What the prompt should accomplish
+- `target_audience` (optional) - Who will use this prompt
+- `parameters` (optional) - What parameters the prompt should accept
 
-### 3. brainstorming.md
+**Use this prompt to:**
 
-Facilitate structured brainstorming sessions.
+- Learn the structure of MCP prompt files
+- Understand Handlebars template syntax
+- Get guidance on best practices
+- Generate ready-to-use prompt files
 
-**Arguments:**
+### User Prompts
 
-- `topic` (required) - Topic to brainstorm
-- `context` (optional) - Background information
-- `constraints` (optional) - Any constraints
-- `participants` (optional) - Participant count
+Add your own prompts by creating `.prompt-mcp/prompts/` directory:
 
-### 4. meeting-notes.md
+```bash
+mkdir -p .prompt-mcp/prompts
+# Add your .md prompt files here
+```
 
-Format and structure meeting notes.
-
-**Arguments:**
-
-- `notes` (required) - Raw meeting notes
-- `format` (optional) - Output format
-- `attendees` (optional) - Meeting attendees
-- `date` (optional) - Meeting date
-
-### 5. refactoring.md
-
-Suggest code refactoring improvements.
-
-**Arguments:**
-
-- `code` (required) - Code to refactor
-- `goals` (optional) - Refactoring goals
-- `constraints` (optional) - Constraints
-- `language` (optional) - Programming language
+Your user prompts will automatically load when the server starts. Use the `create-prompt` prompt to help you build new prompts!
 
 ---
 

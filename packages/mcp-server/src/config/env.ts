@@ -60,11 +60,6 @@ function parseBoolean(
 export function loadConfigFromEnv(): Partial<ServerConfig> {
   const config: Partial<ServerConfig> = {};
 
-  // Custom prompts directory
-  if (process.env["CUSTOM_PROMPTS_DIR"]) {
-    config.customPromptsDir = process.env["CUSTOM_PROMPTS_DIR"];
-  }
-
   // HTTP port
   if (process.env["HTTP_PORT"]) {
     config.httpPort = parsePort(process.env["HTTP_PORT"]);
