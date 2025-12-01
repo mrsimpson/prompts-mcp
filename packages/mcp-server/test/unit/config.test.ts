@@ -31,12 +31,6 @@ describe("loadConfig", () => {
     });
   });
 
-  it("should load custom prompts directory from env", () => {
-    process.env["CUSTOM_PROMPTS_DIR"] = "/path/to/prompts";
-    const config = loadConfig();
-    expect(config.customPromptsDir).toBe("/path/to/prompts");
-  });
-
   it("should load HTTP port from env", () => {
     process.env["HTTP_PORT"] = "8080";
     const config = loadConfig();

@@ -17,11 +17,6 @@ function validateConfig(config: ServerConfig): void {
       "At least one transport (stdio or HTTP) must be enabled"
     );
   }
-
-  // Validate custom prompts directory if provided
-  if (config.customPromptsDir && typeof config.customPromptsDir !== "string") {
-    throw new ConfigurationError("customPromptsDir must be a string");
-  }
 }
 
 /**

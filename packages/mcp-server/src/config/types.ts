@@ -16,8 +16,6 @@ export interface ServerConfig {
   serverName: string;
   /** Server version */
   serverVersion: string;
-  /** Optional custom prompts directory */
-  customPromptsDir?: string;
   /** HTTP server port */
   httpPort: number;
   /** Logging level */
