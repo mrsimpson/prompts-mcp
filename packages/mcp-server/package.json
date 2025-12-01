@@ -1,6 +1,6 @@
 {
   "name": "@codemcp/prompts",
-  "version": "0.0.4",
+  "version": "1.0.0",
   "description": "MCP server that exposes prompts from markdown files via stdio and HTTP",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
