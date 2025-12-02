@@ -1,292 +1,320 @@
-<a name="readme-top"></a>
+# Prompts MCP Server
 
-<br />
-<div align="center">
-  <h1>Modern Typescript Monorepo Example</h1>
-  <p>A modern monorepo example using Typescript, PNPM and Turborepo.</p>
+> **Prompts as Code** – Treat your prompts like you treat your code: structured, parameterized, versioned, and reusable.
 
-  <a href="https://github.com/bakeruk/modern-monorepo-example/blob/main/LICENSE">
-    <img src="https://img.shields.io/github/license/bakeruk/modern-typescript-monorepo-example.svg?style=for-the-badge" alt="License" />
-  </a>
-  <a href="https://linkedin.com/in/lukebaker87">
-    <img src="https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555" alt="LinkedIn" />
-  </a>
-</div>
-<br />
+[![License](https://img.shields.io/github/license/mrsimpson/prompts-mcp.svg?style=for-the-badge)](LICENSE)
 
-## Table of Contents
+---
 
-- [Table of Contents](#table-of-contents)
-- [About the project](#about-the-project)
-  - [Built With](#built-with)
-    - [PNPM](#pnpm)
-    - [Turborepo](#turborepo)
-    - [Husky](#husky)
-    - [Typescript](#typescript)
-    - [Prettier](#prettier)
-    - [Eslint](#eslint)
-    - [Oxlint](#oxlint)
-    - [Nodemon](#nodemon)
-    - [Vitest](#vitest)
-    - [GitHub Actions](#github-actions)
-    - [Conventional Commits](#conventional-commits)
-    - [Vitepress](#vitepress)
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-    - [PNPM](#pnpm-1)
-    - [Node LTS (18)](#node-lts-18)
-  - [Installation](#installation)
-- [Usage](#usage)
-- [Deployment](#deployment)
-  - [Docker](#docker)
-- [License](#license)
+## Why Prompts as Code?
 
-## About the project
+As software engineers, we follow a simple principle:
 
-Technology and its tooling evolves overtime, the aim of this project is to provide a modern Typescript monorepo example for today and for the future. Watch this space as time progresses to be kept up to date with changes within this area.
+> **If you repeat the same action three times, build a template.**
 
-Feel free to ask any questions or raise any issues.
+The craftsman's principle. From ad-hoc to systematic. From repetition to tooling. And ultimately:
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+**Repetition → Tooling → Quality**
 
-### Built With
+This applies to prompts too. Whether it's code reviews, test generation, or documentation cleanup – we repeat the same prompt structures with different contexts. Instead of retyping or copy-pasting variations, we can parametrize them.
 
-This project uses the following technologies and tools:
+### The Dilemma
 
-- [PNPM](https://pnpm.io/) - Package management
-- [Turborepo](https://turbo.build/repo) - High performance build system
-- [Husky](https://typicode.github.io/husky/) - Git hooks
-- [Typescript](https://www.typescriptlang.org/) - Type-safe codebase
-- [Prettier](https://prettier.io/) - Code formatter
-- [Eslint](https://eslint.org/) - Code linter
-- [Oxlint](https://oxc.rs/) - Fast Rust-based linter
-- [Nodemon](https://github.com/remy/nodemon) - Development runtime (script monitor)
-- [Vitest](https://vitest.dev/) - Frontend & backend test suite
-- [GitHub Actions](https://github.com/features/actions) - CI/CD workflow automation
-- [Conventional Commits](https://www.conventionalcommits.org/) - Commit message standard
+Prompts are often either:
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+- **Too simple** – providing little value beyond basic instructions
+- **Too detailed** – requiring constant adaptation for each context, making them hard to reuse
 
-#### PNPM
+### The Solution
 
-A Fast, disk space efficient package manager with native workspace support. PNPM is a drop-in replacement for [NPM](https://github.com/npm/cli) and [Yarn](https://yarnpkg.com/) (`v1` & `v2`). It's faster than both and uses less disk space. It has a lockfile that is compatible with both NPM and Yarn. With regard to a monorepo, in most cases, it also serves as a replacement for [Lerna](https://lerna.js.org/).
+**Parametrize your prompts** – just like you extract variables from code:
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+```markdown
+---
+name: code-review
+description: Perform a code review with specific focus areas
+arguments:
+  - name: code
+    description: The code to review
+    required: true
+  - name: focus
+    description: Specific aspects to focus on (e.g., "performance", "security")
+    required: false
+---
 
-#### Turborepo
+Review the following code:
 
-A high-performance build system for monorepos. Turborepo is a replacement for [Lerna](https://lerna.js.org/) and it is mildly faster than Lerna's integrated counterpart [Nx](https://nx.dev/). It also requires less configuration and has less of a learning curve compared to Nx if used independently.
+\`\`\`
+{{code}}
+\`\`\`
 
-It is worth mentioning, along side Nodemon, you can get the same development experience as if you were working with [Concurrently](https://github.com/open-cli-tools/concurrently) to run multiple development scripts or packages local to the repository.
+{{#if focus}}
+Focus specifically on: {{focus}}
+{{/if}}
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+Provide feedback on:
 
-#### Husky
-
-A modern Git hooks manager.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-#### Typescript
-
-A superset of JavaScript that compiles to clean JavaScript code. A type-safe coding language and a great tool for large codebases as it helps to prevent bugs and improves code quality.
-
-You will notice 3 `tsconfig.ts` file variants in the root of the project.
-
-- `tsconfig.base.json` - This is the base configuration for all packages within the monorepo. It is worth pointing out that we extend the recommended rules for the current Node LTS version and for strict type-checking from `@tsconfig/node-lts-strictest` ([tsconfig/bases](https://github.com/tsconfig/bases))
-- `tsconfig.build.json` - This is the configuration for the build process. It extends the base configuration and configures where the compiled codebase should be outputted to and what should be compiled.
-- `tsconfig.json` - This is the configuration for the root of the monorepo mainly for the IDE to use and other libraries that may need it such as Eslint (`@typescript-eslint`). It also extends the base configuration.
-
-Within each `packages/*` directory, you will notice a `tsconfig.json` and `tsconfig.build.json` file. This is for package specific Typescript configuration. It is important in some aspects to treat each package independently from each other as they may have different requirements.
-
-For example, the `tsconfig.build.json` file within a `packages/api` directory may have its `module` option set to `commonjs`. Whereas the `tsconfig.build.json` file within a `packages/frontend` directory might have its `module` option set to `esnext`.
-
-It is worth mentioning, to improve performance, the [incremental](https://www.typescriptlang.org/tsconfig#incremental) option within the `tsconfig.base.json` has been set to `true`. This will cache the results of the last successful compilation and use it to speed up the next compilation.
-
-Another configuration that is worth mentioning, is that the [declaration](https://www.typescriptlang.org/tsconfig#declaration) option has also been set to `true`. This will generate `.d.ts` files for each file within the built `dist` directory. These files separate out the type information from the compiled code resulting in cleaner code output. This is also faster for the packages that depend on them as the compile doesn't have to sift through the code to find the types.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-#### Prettier
-
-An opinionated code formatter.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-#### Eslint
-
-A pluggable and configurable linting tool that statically analyses your code to quickly find problems and can be used to enforce code style.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-#### Oxlint
-
-A fast Rust-based linter that provides extremely fast linting performance. Oxlint runs before ESLint in the linting pipeline to catch common issues quickly, with ESLint handling more complex rules and auto-fixing. This two-stage approach provides both speed and comprehensive coverage.
-
-The project uses oxlint with lint-staged for pre-commit hooks, ensuring fast feedback during development while maintaining code quality.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-#### Nodemon
-
-A monitoring tool that restarts the configured executable when file changes in the configured directory are detected.
-
-Within the `packages/*` directories, you will notice a `nodemode.json` that has an executable script of `exec: pnpm typecheck && pnpm build`. This is to ensure that the codebase is fully type-checked and built - ready for dependants to import. Remember, that the built configuration is only intended for the final built code and not the source code. This form of double Type-checking also quite performant as the Typescript compilation is cached in the form a generate `tsconfig.tsbuildinfo` file thanks to the `incremental: true` Typescript configuration option.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-#### Vitest
-
-A fast and feature-rich Vite-native testing framework. Vitest provides a seamless testing experience with native TypeScript support, built-in code coverage, and a simple, Jest-compatible API.
-
-Unlike the previous Jest setup, Vitest leverages Vite's native ESM support and provides faster test execution with minimal configuration.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-#### GitHub Actions
-
-A CI/CD workflow automation tool that is built into GitHub. It is a great tool for automating your workflow and can be used to build, test and deploy your codebase.
-
-It is worth pointing out the `.github/workflows/pr.yaml` file. This workflow runs on every `pull_request` and validates the PR title follows the [Conventional Commits](https://www.conventionalcommits.org/) specification.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-#### Conventional Commits
-
-A specification for adding human and machine readable meaning to commit messages. It is a great tool for automating your workflow and can be used to build, test and deploy your codebase.
-
-The project follows the Conventional Commits specification with the following accepted prefixes:
-
-- `feat:` - A new feature (minor version bump)
-- `fix:` - A bug fix (patch version bump)
-- `docs:` - Documentation changes
-- `style:` - Code formatting, missing semicolons, etc. (no functional changes)
-- `refactor:` - Code refactoring without introducing new features or fixing bugs
-- `test:` - Adding or modifying tests
-- `chore:` - Maintenance tasks, updates to build processes, etc.
-- `perf:` - Performance improvements
-- `ci:` - Changes to CI configuration files and scripts
-- `build:` - Changes that affect the build system or external dependencies
-  Optional scopes can be added in parentheses to provide additional context:
-
-- `feat(auth): add two-factor authentication`
-- `fix(api): resolve connection timeout issue`
-
-Breaking changes should be indicated by adding an exclamation mark after the type/scope:
-
-- `feat!: major API redesign`
-- `refactor!(core): complete system architecture change`
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-#### VitePress
-
-A modern static site generator powered by Vue 3 and Vite. VitePress enables the creation of fast, lightweight documentation sites with a focus on developer experience and performance.
-
-Project documentation scripts:
-
-- `pnpm docs:dev`: Start local development server
-- `pnpm docs:build`: Build production documentation
-- `pnpm docs:preview`: Preview production build locally
-
-The documentation is located in the `docs/` directory and uses VitePress and supports Mermaid diagrams.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-#### Arc42
-
-A comprehensive template for software and system architecture documentation. Arc42 provides a structured approach to documenting software architectures, making complex systems more understandable and maintainable.
-
-The project uses VitePress to render Arc42-style documentation, allowing for easy navigation and maintenance of architectural documentation.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-## Getting Started
-
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-### Prerequisites
-
-Here's a list of technologies that you will need in order to run this project. We're going to assume that you already have Node.js installed, however, you will need the required version (LTS or v18+) as stated in the `package.json:engines.node` configuration.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-#### PNPM
-
-If your computer doesn't already have PNPM installed, you can install it by visiting the [PNPM installation](https://pnpm.io/installation) page.
-
-If you're using MacOS, you can install it using Homebrew.
-
-```sh
-brew install pnpm
+1. Code quality and maintainability
+2. Potential bugs or issues
+3. Performance considerations
+4. Best practices
 ```
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+The structure stays stable. The **variable parts** (`{{code}}`, `{{focus}}`) are parameterized.
 
-#### Node LTS (18)
+### Why This Matters
 
-No you have PNPM installed, you can install the required Node version by running the following command.
+🔄 **Reusability through Variables**  
+One prompt, many contexts. Parameterize the variable parts instead of rewriting for every use case.
 
-```sh
-pnpm add -g n
-n lts
-```
+📦 **Version Control**  
+Prompts live in your **Git repository**, not lost in chat history. Review, iterate, and rollback – like any other code.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+🔧 **Quality**  
+When a prompt works better, refine it. When it degrades, roll back. Continuous improvement, just like code.
+
+👥 **Team Sharing**  
+Share your best prompts with your team – not as screenshots or copy-paste, but as **structured, documented artifacts**.
+
+---
+
+## Features
+
+- 📝 **Markdown-based prompts** with YAML/JSON front matter
+- 🎨 **Handlebars templating** for parameter substitution and conditionals
+- 🔌 **Dual transport support**: stdio (local) and HTTP (remote)
+- 🎯 **Pre-shipped prompts** including `create-prompt` to help you build new prompts
+- 🔒 **Type-safe** with full TypeScript support
+- ⚡ **Lightweight** and fast
+- 🔄 **Hot-reload** user prompts from `.prompts-mcp/prompts`
+
+---
+
+## Quick Start
 
 ### Installation
 
-To install the monorepo and all of its dependancies, simply run the following command at the root of the project.
+```bash
+# Clone the repository
+git clone https://github.com/mrsimpson/prompts-mcp.git
+cd prompts-mcp/packages/mcp-server
 
-```sh
-pnpm install
+# Install dependencies
+npm install
+
+# Build
+npm run build
+
+# Run the server (stdio transport for Claude Desktop)
+node dist/bin.js
 ```
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+### Configure Claude Desktop
 
-## Usage
+Add to your Claude config file:
 
-To run the monorepo and all of its packages, simply run the following command at the root of the project.
+**macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`  
+**Windows:** `%APPDATA%\Claude\claude_desktop_config.json`  
+**Linux:** `~/.config/Claude/claude_desktop_config.json`
 
-```sh
-pnpm dev
+```json
+{
+  "mcpServers": {
+    "prompts": {
+      "command": "node",
+      "args": ["/absolute/path/to/prompts-mcp/packages/mcp-server/dist/bin.js"],
+      "env": {
+        "ENABLE_STDIO": "true",
+        "LOG_LEVEL": "info"
+      }
+    }
+  }
+}
 ```
 
-Turborepo and Nodemon will run each package in parallel and watch for file changes.
+Restart Claude Desktop, and you're ready to use your prompts!
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+### Create Your First Prompt
 
-## Deployment
+1. Create a `.prompts-mcp/prompts` directory in your project:
 
-There are several ways to deploy this project. Depending on your requirements, here are some examples of some popular methods.
+   ```bash
+   mkdir -p .prompts-mcp/prompts
+   ```
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+2. Add a prompt file (e.g., `my-prompt.md`):
 
-### Docker
+   ```markdown
+   ---
+   name: my-first-prompt
+   description: A simple greeting prompt
+   arguments:
+     - name: name
+       description: The name to greet
+       required: true
+   ---
 
-Making use of the [pnpm deploy](https://pnpm.io/cli/deploy) command, we can create a Docker image that only contains the production dependencies for a specific package within the monorepo. This essential bundles the given package and all of its local and external dependencies.
+   Hello {{name}}! Welcome to prompts-as-code.
+   ```
 
-```dockerfile
-FROM workspace as pruned
-RUN pnpm --filter <PACKAGE_NAME> --prod deploy <TARGET_DIRECTORY>
+3. Restart the server to load your new prompt
 
-FROM node:18-alpine
-WORKDIR /app
+---
 
-ENV NODE_ENV=production
+## How It Works
 
-COPY --from=pruned /app/pruned .
+1. **Define prompts** as Markdown files with YAML front matter
+2. **Parameterize** variable parts using Handlebars syntax (`{{variable}}`)
+3. **Store prompts** in `.prompts-mcp/prompts` or use pre-shipped ones
+4. **Invoke prompts** from your MCP client (e.g., Claude Desktop)
+5. **Parameters are substituted** server-side before sending to the client
 
-ENTRYPOINT ["node", "index.js"]
+The server handles template rendering, validation, and transport – you just focus on writing great prompts.
+
+---
+
+## User Guide
+
+For detailed documentation, see:
+
+📚 **[Complete User Guide](packages/mcp-server/README.md)** – Full documentation including:
+
+- Detailed configuration options
+- Prompt file format and Handlebars syntax
+- Running with stdio and HTTP transports
+- Pre-shipped prompts reference
+- Development guide
+- Troubleshooting
+
+🚀 **[Quick Start Guide](packages/mcp-server/QUICKSTART.md)** – Get up and running in minutes
+
+---
+
+## Example: Code Review Prompt
+
+Here's a practical example of a reusable code review prompt:
+
+```markdown
+---
+name: code-review
+description: Perform a comprehensive code review
+arguments:
+  - name: code
+    description: The code to review
+    required: true
+  - name: language
+    description: Programming language (e.g., "TypeScript", "Python")
+    required: false
+  - name: focus
+    description: Specific review focus (e.g., "performance", "security")
+    required: false
+---
+
+Please review the following {{language}} code:
+
+\`\`\`
+{{code}}
+\`\`\`
+
+{{#if focus}}
+Focus specifically on: {{focus}}
+{{/if}}
+
+Provide feedback on:
+
+1. Code quality and style
+2. Potential bugs or issues
+3. Performance optimizations
+4. Best practices
 ```
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+**Usage:**
+
+- Invoke `code-review` with `code` parameter
+- Optionally specify `language` and `focus`
+- Get consistent, structured code reviews
+
+---
+
+## Pre-shipped Prompts
+
+The server includes **`create-prompt`** – a meta-prompt that helps you create new prompts:
+
+```markdown
+Arguments:
+
+- purpose: What the prompt should accomplish
+- target_audience: Who will use this prompt (optional)
+- parameters: What parameters the prompt should accept (optional)
+```
+
+Use `create-prompt` to learn the structure and generate ready-to-use prompt files!
+
+---
+
+## Architecture
+
+```
+prompts-mcp/
+├── packages/
+│   └── mcp-server/
+│       ├── src/
+│       │   ├── prompts/        # Prompt loading & validation
+│       │   ├── server/          # MCP server factory
+│       │   ├── transports/      # stdio & HTTP transports
+│       │   └── config/          # Configuration management
+│       ├── resources/
+│       │   └── prompts/         # Pre-shipped prompts
+│       └── test/                # Integration & unit tests
+└── .prompts-mcp/
+    └── prompts/                 # Your user prompts (auto-loaded)
+```
+
+---
+
+## Development
+
+```bash
+# Run all tests
+npm test
+
+# Run tests in watch mode
+npm run test:watch
+
+# Build
+npm run build
+
+# Lint
+npm run lint
+
+# Type check
+npm run typecheck
+```
+
+---
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit issues and pull requests.
+
+---
 
 ## License
 
-Distributed under the MIT License. See the local `LICENSE` file for more information.
+MIT License – see [LICENSE](LICENSE) for details
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+---
+
+## Links
+
+- 📦 [GitHub Repository](https://github.com/mrsimpson/prompts-mcp)
+- 📖 [Model Context Protocol (MCP)](https://modelcontextprotocol.io/)
+- 📝 [Blog Post: Prompts als Code](https://oliver-simpson.de/blog/prompts-als-code) (German)
+
+---
+
+## Status
+
+⚠️ **Alpha** – This project is still in early development. Expect breaking changes and rough edges. Feedback and contributions welcome!
+
+Release early in the open. 🚀
