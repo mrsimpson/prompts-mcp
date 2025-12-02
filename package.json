@@ -1,6 +1,6 @@
 {
   "name": "prompts-mcp",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A simple MCP server exposing prompts",
   "authors": [
     "Oliver Jägle <github@beimir.net>"
