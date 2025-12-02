@@ -6,4 +6,4 @@
  * Subdirectory where user prompts are stored
  * Used for directory discovery
  */
-export const USER_PROMPTS_SUBDIR = ".prompt-mcp/prompts";
+export const USER_PROMPTS_SUBDIR = ".prompts-mcp/prompts";

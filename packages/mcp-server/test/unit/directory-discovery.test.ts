@@ -241,14 +241,15 @@ describe("Directory Discovery", () => {
 
   describe("Real-world usage patterns", () => {
     it("should work like prompts-mcp pattern", () => {
-      // Simulate .prompt-mcp/prompts in project
-      const promptsDir = join(testRoot, ".prompt-mcp", "prompts");
+      // Simulate .prompts-mcp/prompts in project
+      const promptsDir = join(testRoot, ".prompts-mcp", "prompts");
       mkdirSync(promptsDir, { recursive: true });
 
       const result = discoverDirectory({
         subdirEnvPrefix: "PROMPTS",
-        subdir: ".prompt-mcp/prompts",
-        startDir: testRoot
+        subdir: ".prompts-mcp/prompts",
+        startDir: testRoot,
+        useHomeFallback: false
       });
 
       expect(result.path).toBe(promptsDir);

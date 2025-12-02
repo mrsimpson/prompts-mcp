@@ -41,7 +41,7 @@ export interface DirectoryDiscoveryOptions {
 
   /**
    * Subdirectory name to search for
-   * @example ".prompt-mcp/prompts"
+   * @example ".prompts-mcp/prompts"
    */
   subdir: string;
 
@@ -60,7 +60,7 @@ export interface DirectoryDiscoveryOptions {
 
   /**
    * Custom home directory subdirectory (if different from main subdir)
-   * @example ".prompt-mcp/prompts" (defaults to subdir if not specified)
+   * @example ".prompts-mcp/prompts" (defaults to subdir if not specified)
    */
   homeSubdir?: string;
 }
@@ -136,10 +136,10 @@ function searchUpward(startDir: string, subdir: string): string | null {
  *
  * @example
  * ```typescript
- * // Find .prompt-mcp/prompts directory
+ * // Find .prompts-mcp/prompts directory
  * const result = discoverDirectory({
  *   subdirEnvPrefix: "PROMPTS",  // Checks PROMPTS_SUBDIR env var
- *   subdir: ".prompt-mcp/prompts"
+ *   subdir: ".prompts-mcp/prompts"
  * });
  *
  * if (result.exists) {

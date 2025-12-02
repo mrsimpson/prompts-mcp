@@ -227,7 +227,7 @@ _[List and define all parameters based on the user's input, specifying which are
 
 ## Next Steps
 
-1. **Save the file**: Copy the generated prompt to `.prompt-mcp/prompts/your-prompt-name.md`
+1. **Save the file**: Copy the generated prompt to `.prompts-mcp/prompts/your-prompt-name.md`
 2. **Test it**: Restart the MCP server and verify the prompt appears
 3. **Iterate**: Refine the prompt based on actual usage and results
 4. **Share**: Consider contributing useful prompts back to the community

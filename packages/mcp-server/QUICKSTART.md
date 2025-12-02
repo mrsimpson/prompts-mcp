@@ -82,10 +82,10 @@ LOG_LEVEL=debug node dist/bin.js
 
 ### Adding User Prompts
 
-Create a `.prompt-mcp/prompts` directory in your working directory:
+Create a `.prompts-mcp/prompts` directory in your working directory:
 
 ```bash
-mkdir -p .prompt-mcp/prompts
+mkdir -p .prompts-mcp/prompts
 # Add your .md prompt files to this directory
 node dist/bin.js
 ```
@@ -183,10 +183,10 @@ A comprehensive guide to creating well-structured MCP prompt files.
 
 ### User Prompts
 
-Add your own prompts by creating `.prompt-mcp/prompts/` directory:
+Add your own prompts by creating `.prompts-mcp/prompts/` directory:
 
 ```bash
-mkdir -p .prompt-mcp/prompts
+mkdir -p .prompts-mcp/prompts
 # Add your .md prompt files here
 ```
 
