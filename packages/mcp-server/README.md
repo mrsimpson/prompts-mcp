@@ -93,11 +93,11 @@ The server can be configured via environment variables:
 
 ### User Prompts
 
-The server automatically loads user prompts from `.prompt-mcp/prompts` in the directory where the server is run (current working directory).
+The server automatically loads user prompts from `.prompts-mcp/prompts` in the directory where the server is run (current working directory).
 
 To add user prompts:
 
-1. Create a `.prompt-mcp/prompts` directory in your project or working directory
+1. Create a `.prompts-mcp/prompts` directory in your project or working directory
 2. Add your prompt files (`.md` format) to this directory
 3. User prompts will override pre-shipped prompts with the same name
 4. Restart the server to load new prompts
@@ -106,7 +106,7 @@ Example structure:
 
 ```
 my-project/
-├── .prompt-mcp/
+├── .prompts-mcp/
 │   └── prompts/
 │       ├── my-custom-prompt.md
 │       └── another-prompt.md
@@ -203,7 +203,7 @@ The server comes with a helpful pre-shipped prompt:
 
 1. **create-prompt** - A comprehensive guide to creating well-structured MCP prompt files with proper front matter, Handlebars templates, and best practices
 
-This prompt helps you create new prompts by guiding you through the structure, syntax, and conventions. Use it to quickly generate new prompt files for your `.prompt-mcp/prompts` directory.
+This prompt helps you create new prompts by guiding you through the structure, syntax, and conventions. Use it to quickly generate new prompt files for your `.prompts-mcp/prompts` directory.
 
 ## Using with Claude Desktop
 
@@ -308,9 +308,9 @@ npm run build
    ls resources/prompts/
    ```
 
-2. To add user prompts, create a `.prompt-mcp/prompts` directory:
+2. To add user prompts, create a `.prompts-mcp/prompts` directory:
    ```bash
-   mkdir -p .prompt-mcp/prompts
+   mkdir -p .prompts-mcp/prompts
    # Add your .md prompt files to this directory
    LOG_LEVEL=debug node dist/bin.js
    ```
