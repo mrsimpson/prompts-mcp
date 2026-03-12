@@ -1,6 +1,6 @@
 {
   "name": "@codemcp/prompts",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "A simple MCP server exposing prompts",
   "authors": [
     "Oliver Jägle <github@beimir.net>"
