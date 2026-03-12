@@ -5,7 +5,7 @@
 import type { ServerConfig } from "./types.js";
 
 export const DEFAULT_CONFIG: ServerConfig = {
-  serverName: "prompts-mcp-server",
+  serverName: "@codemcp/prompts",
   serverVersion: "1.0.0",
   httpPort: 3000,
   logLevel: "info",

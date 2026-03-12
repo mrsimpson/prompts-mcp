@@ -22,7 +22,7 @@ describe("loadConfig", () => {
   it("should load default configuration", () => {
     const config = loadConfig();
     expect(config).toEqual({
-      serverName: "prompts-mcp-server",
+      serverName: "@codemcp/prompts",
       serverVersion: "1.0.0",
       httpPort: 3000,
       logLevel: "info",
