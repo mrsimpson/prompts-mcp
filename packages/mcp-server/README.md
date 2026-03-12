@@ -82,14 +82,14 @@ curl http://localhost:3000/health
 
 The server can be configured via environment variables:
 
-| Variable         | Description                                     | Default              |
-| ---------------- | ----------------------------------------------- | -------------------- |
-| `SERVER_NAME`    | Server name for MCP identification              | `mcp-prompts-server` |
-| `SERVER_VERSION` | Server version                                  | `0.1.0`              |
-| `HTTP_PORT`      | HTTP server port                                | `3000`               |
-| `LOG_LEVEL`      | Logging level: `error`, `warn`, `info`, `debug` | `info`               |
-| `ENABLE_STDIO`   | Enable stdio transport                          | `true`               |
-| `ENABLE_HTTP`    | Enable HTTP transport                           | `false`              |
+| Variable         | Description                                     | Default            |
+| ---------------- | ----------------------------------------------- | ------------------ |
+| `SERVER_NAME`    | Server name for MCP identification              | `@codemcp/prompts` |
+| `SERVER_VERSION` | Server version                                  | `0.1.0`            |
+| `HTTP_PORT`      | HTTP server port                                | `3000`             |
+| `LOG_LEVEL`      | Logging level: `error`, `warn`, `info`, `debug` | `info`             |
+| `ENABLE_STDIO`   | Enable stdio transport                          | `true`             |
+| `ENABLE_HTTP`    | Enable HTTP transport                           | `false`            |
 
 ### User Prompts
 

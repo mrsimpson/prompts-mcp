@@ -1,5 +1,5 @@
 {
-  "name": "prompts-mcp",
+  "name": "@codemcp/prompts",
   "version": "1.0.2",
   "description": "A simple MCP server exposing prompts",
   "authors": [
@@ -71,6 +71,7 @@
     "oxlint": "1.14.0",
     "prettier": "^3.7.2",
     "rimraf": "^6.1.2",
+    "tsup": "^8.0.0",
     "turbo": "^2.6.1",
     "typescript": "^5.9.3",
     "typescript-eslint": "8.42.0",
@@ -78,5 +79,5 @@
     "vitepress-plugin-mermaid": "2.0.17",
     "vitest": "^3.2.4"
   },
-  "packageManager": "pnpm@9.14.2"
+  "packageManager": "pnpm@10.32.1"
 }

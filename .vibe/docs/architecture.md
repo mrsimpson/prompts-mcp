@@ -404,13 +404,13 @@ packages/mcp-server/
 
 ```bash
 # Install
-pnpm add @your-org/mcp-prompts-server
+pnpm add @codemcp/prompts
 
 # Run with stdio
-npx mcp-prompts-server
+npx @codemcp/prompts
 
 # Run with HTTP
-CUSTOM_PROMPTS_DIR=/path/to/prompts HTTP_PORT=3000 npx mcp-prompts-server
+CUSTOM_PROMPTS_DIR=/path/to/prompts HTTP_PORT=3000 npx @codemcp/prompts
 ```
 
 **Configuration:**
@@ -421,7 +421,7 @@ export CUSTOM_PROMPTS_DIR=/path/to/organization/prompts
 export HTTP_PORT=3000
 
 # Or via CLI arguments
-mcp-prompts-server --prompts-dir=/path/to/prompts --http-port=3000
+npx @codemcp/prompts --prompts-dir=/path/to/prompts --http-port=3000
 ```
 
 ## 8. Concepts

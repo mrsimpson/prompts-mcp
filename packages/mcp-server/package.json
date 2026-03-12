@@ -6,7 +6,7 @@
   "types": "dist/index.d.ts",
   "type": "module",
   "bin": {
-    "mcp-prompts-server": "dist/bin.js"
+    "ade-prompts": "dist/bin.js"
   },
   "files": [
     "dist",
@@ -15,7 +15,8 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "build": "tsup",
+    "build:tsc": "tsc -p tsconfig.build.json",
     "clean:build": "rimraf ./dist",
     "dev": "nodemon",
     "format": "prettier --check .",
@@ -35,7 +36,8 @@
   },
   "devDependencies": {
     "@types/node": "^22.10.1",
-    "prettier": "^3.7.2"
+    "prettier": "^3.7.2",
+    "tsup": "^8.0.0"
   },
   "keywords": [
     "mcp",
@@ -55,5 +57,8 @@
     "url": "https://github.com/mrsimpson/prompts-mcp/issues"
   },
   "author": "Oliver Jaegle",
-  "license": "MIT"
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  }
 }
