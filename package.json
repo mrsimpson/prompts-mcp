@@ -1,6 +1,6 @@
 {
   "name": "prompts-mcp-workspace",
-  "version": "2.0.2",
+  "version": "2.0.4",
   "private": true,
   "description": "Monorepo workspace for @codemcp/prompts MCP server",
   "authors": [
