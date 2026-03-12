@@ -524,7 +524,7 @@ interface ParseResult {
 
 **Binary:**
 
-- `mcp-prompts-server` → Entry point script
+- `ade-prompts` → Entry point script
 
 ### 10.2 Configuration
 
@@ -539,7 +539,7 @@ LOG_LEVEL=info
 **CLI Arguments (Alternative):**
 
 ```bash
-mcp-prompts-server --prompts-dir=/path/to/prompts --http-port=3000
+ade-prompts --prompts-dir=/path/to/prompts --http-port=3000
 ```
 
 ### 10.3 Installation Patterns
@@ -556,8 +556,8 @@ pnpm dev
 **Production:**
 
 ```bash
-pnpm add @your-org/mcp-prompts-server
-npx mcp-prompts-server
+pnpm add @codemcp/prompts
+npx ade-prompts
 ```
 
 ---

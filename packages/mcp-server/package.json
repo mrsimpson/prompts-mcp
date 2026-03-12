@@ -6,7 +6,7 @@
   "types": "dist/index.d.ts",
   "type": "module",
   "bin": {
-    "mcp-prompts-server": "dist/bin.js"
+    "ade-prompts": "dist/bin.js"
   },
   "files": [
     "dist",
