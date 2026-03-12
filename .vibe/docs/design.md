@@ -524,7 +524,7 @@ interface ParseResult {
 
 **Binary:**
 
-- `ade-prompts` → Entry point script
+- `npx @codemcp/prompts` → Entry point script
 
 ### 10.2 Configuration
 
@@ -539,7 +539,7 @@ LOG_LEVEL=info
 **CLI Arguments (Alternative):**
 
 ```bash
-ade-prompts --prompts-dir=/path/to/prompts --http-port=3000
+npx @codemcp/prompts --prompts-dir=/path/to/prompts --http-port=3000
 ```
 
 ### 10.3 Installation Patterns
@@ -557,7 +557,7 @@ pnpm dev
 
 ```bash
 pnpm add @codemcp/prompts
-npx ade-prompts
+npx @codemcp/prompts
 ```
 
 ---

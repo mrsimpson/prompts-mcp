@@ -407,10 +407,10 @@ packages/mcp-server/
 pnpm add @codemcp/prompts
 
 # Run with stdio
-npx ade-prompts
+npx @codemcp/prompts
 
 # Run with HTTP
-CUSTOM_PROMPTS_DIR=/path/to/prompts HTTP_PORT=3000 npx ade-prompts
+CUSTOM_PROMPTS_DIR=/path/to/prompts HTTP_PORT=3000 npx @codemcp/prompts
 ```
 
 **Configuration:**
@@ -421,7 +421,7 @@ export CUSTOM_PROMPTS_DIR=/path/to/organization/prompts
 export HTTP_PORT=3000
 
 # Or via CLI arguments
-ade-prompts --prompts-dir=/path/to/prompts --http-port=3000
+npx @codemcp/prompts --prompts-dir=/path/to/prompts --http-port=3000
 ```
 
 ## 8. Concepts
