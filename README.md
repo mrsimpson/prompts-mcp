@@ -252,6 +252,16 @@ Use `create-prompt` to learn the structure and generate ready-to-use prompt file
 
 ---
 
+## But there are skills!
+
+True. Those didn't exist when this mcp server was created. Skills can largely replace the need for this mcp server, however
+
+- Prompts are exposed to the user, skills are meant to be discoverable by the agent. Claude Code particularly blurs this line by adding metadata to the skill who may invoke it.
+- Skills will impact the context
+- There is not proper specification for parameters of skills. There's a proprieatry solution by Annthropic again, but it's not standardized at all – and actually a bit buggy, due to schemaless parameters.
+
+---
+
 ## Architecture
 
 ```
