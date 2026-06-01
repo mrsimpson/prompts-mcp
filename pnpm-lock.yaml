@@ -100,7 +100,7 @@ importers:
     dependencies:
       '@hono/node-server':
         specifier: 1.19.13
-        version: 1.19.13(hono@4.10.7)
+        version: 1.19.13(hono@4.12.18)
       '@modelcontextprotocol/sdk':
         specifier: ^1.23.0
         version: 1.23.0(zod@4.1.13)
@@ -114,8 +114,8 @@ importers:
         specifier: 4.7.9
         version: 4.7.9
       hono:
-        specifier: 4.10.7
-        version: 4.10.7
+        specifier: 4.12.18
+        version: 4.12.18
       zod:
         specifier: 4.1.13
         version: 4.1.13
@@ -2308,8 +2308,8 @@ packages:
   hast-util-whitespace@3.0.0:
     resolution: {integrity: sha512-88JUN06ipLwsnv+dVn+OIYOvAuvBMy/Qoi6O7mQHxdPXpjy+Cd6xRkWwux7DKO+4sYILtLBRIKgsdpS2gQc7qw==}
 
-  hono@4.10.7:
-    resolution: {integrity: sha512-icXIITfw/07Q88nLSkB9aiUrd8rYzSweK681Kjo/TSggaGbOX4RRyxxm71v+3PC8C/j+4rlxGeoTRxQDkaJkUw==}
+  hono@4.12.18:
+    resolution: {integrity: sha512-RWzP96k/yv0PQfyXnWjs6zot20TqfpfsNXhOnev8d1InAxubW93L11/oNUc3tQqn2G0bSdAOBpX+2uDFHV7kdQ==}
     engines: {node: '>=16.9.0'}
 
   hookable@5.5.3:
@@ -3950,9 +3950,9 @@ snapshots:
       '@eslint/core': 0.17.0
       levn: 0.4.1
 
-  '@hono/node-server@1.19.13(hono@4.10.7)':
+  '@hono/node-server@1.19.13(hono@4.12.18)':
     dependencies:
-      hono: 4.10.7
+      hono: 4.12.18
 
   '@humanfs/core@0.19.1': {}
 
@@ -5667,7 +5667,7 @@ snapshots:
     dependencies:
       '@types/hast': 3.0.4
 
-  hono@4.10.7: {}
+  hono@4.12.18: {}
 
   hookable@5.5.3: {}
 
