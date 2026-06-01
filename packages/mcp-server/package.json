@@ -31,7 +31,7 @@
     "@types/handlebars": "4.0.40",
     "gray-matter": "^4.0.3",
     "handlebars": "4.7.9",
-    "hono": "4.10.7",
+    "hono": "4.12.18",
     "zod": "4.1.13"
   },
   "devDependencies": {
