@@ -28,7 +28,7 @@
   "dependencies": {
     "@hono/node-server": "1.19.17",
     "@modelcontextprotocol/sdk": "^1.23.0",
-    "@types/handlebars": "4.0.40",
+    "@types/handlebars": "4.1.0",
     "gray-matter": "^4.0.3",
     "handlebars": "4.7.10",
     "hono": "4.13.7",

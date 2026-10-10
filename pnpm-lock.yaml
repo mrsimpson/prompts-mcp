@@ -105,8 +105,8 @@ importers:
         specifier: ^1.23.0
         version: 1.23.0(zod@4.1.13)
       '@types/handlebars':
-        specifier: 4.0.40
-        version: 4.0.40
+        specifier: 4.1.0
+        version: 4.1.0
       gray-matter:
         specifier: ^4.0.3
         version: 4.0.3
@@ -1347,8 +1347,9 @@ packages:
   '@types/geojson@7946.0.16':
     resolution: {integrity: sha512-6C8nqWur3j98U6+lXDfTUWIfgvZU+EumvpHKcYjujKH7woYyLj2sUmff0tRhrqM7BohUw7Pz3ZB1jj2gW9Fvmg==}
 
-  '@types/handlebars@4.0.40':
-    resolution: {integrity: sha512-sGWNtsjNrLOdKha2RV1UeF8+UbQnPSG7qbe5wwbni0mw4h2gHXyPFUMOC+xwGirIiiydM/HSqjDO4rk6NFB18w==}
+  '@types/handlebars@4.1.0':
+    resolution: {integrity: sha512-gq9YweFKNNB1uFK71eRqsd4niVkXrxHugqWFQkeLRJvGjnxsLr16bYtcsG4tOFwmYi0Bax+wCkbf1reUfdl4kA==}
+    deprecated: This is a stub types definition. handlebars provides its own type definitions, so you do not need this installed.
 
   '@types/hast@3.0.4':
     resolution: {integrity: sha512-WPs+bbQw5aCj+x6laNGWLH3wviHtoCv/P3+otBhbOhJgG8qtpdAMlTCxLtsTWA7LH1Oh/bFCHsBn0TPS5m30EQ==}
@@ -4391,7 +4392,9 @@ snapshots:
 
   '@types/geojson@7946.0.16': {}
 
-  '@types/handlebars@4.0.40': {}
+  '@types/handlebars@4.1.0':
+    dependencies:
+      handlebars: 4.7.10
 
   '@types/hast@3.0.4':
     dependencies:
